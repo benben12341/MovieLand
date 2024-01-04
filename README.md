@@ -1,7 +1,7 @@
 # MovieLand using MongoDB, Express, React and Node
 
 Are you a movie lover?
-Browse new releases and explore thousands of all-time favorites movies
+Browse new releases and explore thousands of all-time favorites movies.
 
 ## Prerequisites
 
