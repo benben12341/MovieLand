@@ -1,10 +1,7 @@
 # MovieLand using MongoDB, Express, React and Node
 
-This is a template for using Express and React in the same project. It is based on Create React App.
-
-Read the article: [Introducing Express React Starter](https://medium.com/burke-knows-words/introducing-express-react-starter-b6d299206a3a)
-
-OR...
+Are you a movie lover?
+Browse new releases and explore thousands of all-time favorites movies
 
 ## Prerequisites
 
