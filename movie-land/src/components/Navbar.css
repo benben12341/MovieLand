@@ -1,0 +1,28 @@
+.navbar {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  border-bottom: 5px solid #f2f2f2;
+  border-radius: 0 0 15px 15px;
+  background-color: rgba(88, 75, 236, 0.381);
+}
+.navbar h1 {
+  color: #0a0f8e;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+.navbar a:hover {
+  color: #f1356d;
+}
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
