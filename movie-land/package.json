@@ -1,26 +1,21 @@
 {
-  "name": "bookstore-mern-stack",
+  "name": "movie-land",
   "version": "1.0.0",
-  "description": "bookstore mern stack",
+  "description": "movie-land",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server",
-    "server": "nodemon backend/server",
-    "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "data:import": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
+    "client": "npm start --prefix frontend"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hieutrung0451/bookstore-mern-stack.git"
+    "url": "git+https://github.com/benben12341/MovieLand.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hieutrung0451/bookstore-mern-stack/issues"
+    "url": "https://github.com/benben12341/MovieLand.git"
   },
-  "homepage": "https://github.com/hieutrung0451/bookstore-mern-stack#readme",
+  "homepage": "https://github.com/benben12341/MovieLand#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
