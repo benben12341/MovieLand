@@ -2,10 +2,6 @@
 
 "Welcome to MovieLand, where cinematic dreams come to life! Immerse yourself in a world of entertainment with our vast collection of blockbuster hits, timeless classics, and hidden gems. From heartwarming dramas to pulse-pounding thrillers, we have something for every movie lover. Explore, discover, and bring the magic of the silver screen into your home. Your journey into the world of movies begins here at MovieLand – where every film is a new adventure!"
 
-## Prerequisites
-
-- [create-react-app](https://github.com/facebookincubator/create-react-app)
-
 ## Installing
 
 ```bash
