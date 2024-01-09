@@ -4,7 +4,12 @@
   "description": "movie-land",
   "main": "server.js",
   "scripts": {
-    "client": "npm start --prefix frontend"
+    "client": "npm start --prefix frontend",
+    "start": "nodemon backend/server",
+    "server": "nodemon backend/server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "data:import": "node backend/seeder",
+    "data:destroy": "node backend/seeder -d"
   },
   "repository": {
     "type": "git",
