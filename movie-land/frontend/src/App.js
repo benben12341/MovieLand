@@ -1,17 +1,15 @@
-import "./App.css";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import './App.css';
+import Navbar from './components/Navbar';
+import MovieLandRoutes from './routes';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Router>
         <Navbar />
-        <main className="content">
-          <Routes>
-            <Route path="/" element={<Home />} exact />
-          </Routes>
+        <main className='content'>
+          <MovieLandRoutes />
         </main>
       </Router>
     </div>
