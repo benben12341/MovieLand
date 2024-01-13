@@ -1,59 +1,59 @@
-const mongoose = require("mongoose")
-const { Review } = require("./ReviewModel")
+const mongoose = require('mongoose');
+const { ReviewSchema } = require('./ReviewModel');
 
 const movieSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     image: {
       type: String,
-      required: true,
+      required: true
     },
     genre: {
       type: String,
-      required: true,
+      required: true
     },
     summary: {
       type: String,
-      required: true,
+      required: true
     },
     rating: {
       type: Number,
       required: true,
-      default: 0,
+      default: 0
     },
     director: {
       type: String,
-      required: true,
+      required: true
     },
     writer: {
       type: String,
-      required: true,
+      required: true
     },
     reviewsAmount: {
       type: Number,
       required: true,
-      default: 0,
+      default: 0
     },
-    reviews: [Review],
+    reviews: [ReviewSchema],
     price: {
       type: Number,
       required: true,
-      default: 0,
+      default: 0
     },
     countInStock: {
       type: Number,
       required: true,
-      default: 0,
-    },
+      default: 0
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
-)
+);
 
-const Movie = mongoose.model("Movie", movieSchema)
+const Movie = mongoose.model('Movie', movieSchema);
 
-module.exports = { Movie }
+module.exports = { Movie };
