@@ -2,12 +2,16 @@
 
 * {
   margin: 0;
-  font-family: "Quicksand";
+  font-family: "Quicksand" !important;
   color: #333;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 .content {
-  max-width: 600px;
+  max-width: 800px;
   margin: 40px auto;
   padding: 20px;
 }
