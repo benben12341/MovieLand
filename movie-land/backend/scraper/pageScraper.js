@@ -1,7 +1,7 @@
 const { Movie } = require('../models/MovieModel');
 
 const scraperObject = {
-  url: 'http://books.toscrape.com',
+  url: 'http://movies.toscrape.com',
   async scraper(browser) {
     let page = await browser.newPage();
     console.log(`Navigating to ${this.url}...`);
@@ -9,9 +9,9 @@ const scraperObject = {
     await page.goto(this.url);
     // Wait for the required DOM to be rendered
     await page.waitForSelector('.page_inner');
-    // Get the link to all the required books
+    // Get the link to all the required movies
     let urls = await page.$$eval('section ol > li', links => {
-      // Make sure the book to be scraped is in stock
+      // Make sure the movie to be scraped is in stock
       links = links.filter(
         link =>
           link.querySelector('.instock.availability > i').textContent !==
@@ -28,11 +28,11 @@ const scraperObject = {
         let dataObj = {};
         let newPage = await browser.newPage();
         await newPage.goto(link);
-        dataObj['bookTitle'] = await newPage.$eval(
+        dataObj['movieTitle'] = await newPage.$eval(
           '.product_main > h1',
           text => text.textContent
         );
-        dataObj['bookPrice'] = await newPage.$eval(
+        dataObj['moviePrice'] = await newPage.$eval(
           '.price_color',
           text => text.textContent
         );
@@ -51,7 +51,7 @@ const scraperObject = {
           '#product_gallery img',
           img => img.src
         );
-        dataObj['bookDescription'] = await newPage.$eval(
+        dataObj['movieDescription'] = await newPage.$eval(
           '#product_description',
           div => div.nextSibling.nextSibling.textContent
         );
@@ -70,11 +70,11 @@ const scraperObject = {
       console.log(currentPageData);
     }
 
-    const books = scrapedData.map(data => {
+    const movies = scrapedData.map(data => {
       return {
-        name: data.bookTitle,
+        name: data.movieTitle,
         image: data.imageUrl,
-        description: data.bookDescription,
+        description: data.movieDescription,
         author: 'Gabriel García Márquez',
         price: Math.ceil(Math.random() * (100 - 30) + 30),
         genre: 'fiction',
@@ -82,7 +82,7 @@ const scraperObject = {
         rating: 0
       };
     });
-    await Movie.insertMany(books);
+    await Movie.insertMany(movies);
   }
 };
 

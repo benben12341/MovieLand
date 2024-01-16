@@ -11,9 +11,9 @@ const { async } = require('@firebase/util');
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCPNO95RSWLHPDPTpcxm3i0xQ0MmWvOO1E',
-  authDomain: 'book-store-4f2d6.firebaseapp.com',
-  projectId: 'book-store-4f2d6',
-  storageBucket: 'book-store-4f2d6.appspot.com',
+  authDomain: 'movie-land-4f2d6.firebaseapp.com',
+  projectId: 'movie-land-4f2d6',
+  storageBucket: 'movie-land-4f2d6.appspot.com',
   messagingSenderId: '1052931738305',
   appId: '1:1052931738305:web:866213b5e69db43a102240'
 };
