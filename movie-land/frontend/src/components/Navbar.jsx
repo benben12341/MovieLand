@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import styled from "styled-components";
 
 const StyledNavbar = styled.nav`
+  z-index: 1;
   padding: 20px;
   display: flex;
   align-items: center;
