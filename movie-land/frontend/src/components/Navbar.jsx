@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import styled from "styled-components";
+import { useDispatch, useSelector } from 'react-redux';
+
+import { logout } from '../actions/userActions';
 
 const StyledNavbar = styled.nav`
   z-index: 1;
@@ -29,6 +32,15 @@ const StyledLink = styled(Link)`
 `;
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
   return (
     <StyledNavbar>
       <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -37,9 +49,33 @@ const Navbar = () => {
           <h1>MovieLand</h1>
         </StyledLink>
       </Box>
-      <StyledLink to="/login">
-        <h1>Sign In</h1>
-      </StyledLink>
+      {userInfo ?
+        <Button
+          sx={{
+            backgroundColor: '#f99f0e',
+            color: 'white',
+            borderRadius: '10px',
+            '&:hover': {
+              backgroundColor: '#ab7216',
+            }
+          }} onClick={handleLogout}>
+          Logout
+        </Button>
+        :
+        <StyledLink to="/login">
+          <Button
+          sx={{
+            backgroundColor: '#f99f0e',
+            color: 'white',
+            borderRadius: '10px',
+            '&:hover': {
+              backgroundColor: '#ab7216',
+            }
+          }}>
+          Sign In
+        </Button>
+        </StyledLink>
+      }
     </StyledNavbar>
   );
 };

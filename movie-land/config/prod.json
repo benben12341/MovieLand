@@ -1,0 +1,22 @@
+{
+    "app": {
+        "protocol": "http",
+        "port": 9090,
+        "privateKeyPath": "",
+        "certificatePath": ""
+    },
+    "db": {
+        "address": "mongodb://localhost:27017",
+        "name": "prod",
+        "query": ""
+    },
+    "secrets": {
+        "key": "hungus-mongoose",
+        "expiresIn": "12h"
+    },
+    "cors": {
+        "origin": "http://localhost:3000",
+        "credentials": true,
+        "optionSuccessStatus": 200
+    }
+}
