@@ -1,3 +1,4 @@
+const config = require('config');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
@@ -46,25 +47,25 @@ app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const port = config.get('app.port') || 5000;
 // importData()
 
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000'
-  }
+    origin: 'http://localhost:3000',
+  },
 });
 
 let interval;
 
-const getApiAndEmit = socket => {
+const getApiAndEmit = (socket) => {
   const response = new Date();
   // Emitting a new message. Will be consumed by the client
   socket.emit('FromAPI', response);
 };
 
-io.on('connection', socket => {
+io.on('connection', (socket) => {
   console.log('New client connected');
   io.emit('clients', io.engine.clientsCount);
   if (interval) {
@@ -78,6 +79,4 @@ io.on('connection', socket => {
   });
 });
 
-server.listen(process.env.PORT || 5000, () =>
-  console.log(`Server has started.`)
-);
+server.listen(port, () => console.log(`Server is listening on ${port}.`));

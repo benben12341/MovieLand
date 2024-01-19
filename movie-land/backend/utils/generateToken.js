@@ -1,9 +1,10 @@
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, "yourrhfdb", {
-    expiresIn: "30d",
-  })
-}
+  return jwt.sign({ id }, config.get('secrets.key'), {
+    expiresIn: '30d',
+  });
+};
 
-module.exports = { generateToken }
+module.exports = { generateToken };
