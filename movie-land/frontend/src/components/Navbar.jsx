@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
 import styled from "styled-components";
-import { useDispatch, useSelector } from 'react-redux';
-
-import { logout } from '../actions/userActions';
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userActions";
+import LogoutByGoogle from "./LogoutByGoogle";
+import { useAuth } from "../context/AuthContext";
 
 const StyledNavbar = styled.nav`
-  z-index: 1;
+  z-index: 999;
   padding: 20px;
   display: flex;
   align-items: center;
@@ -35,6 +36,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+  const { isAuthenticatedWithGoogle } = useAuth();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -49,33 +51,36 @@ const Navbar = () => {
           <h1>MovieLand</h1>
         </StyledLink>
       </Box>
-      {userInfo ?
+      {userInfo ? (
         <Button
           sx={{
-            backgroundColor: '#f99f0e',
-            color: 'white',
-            borderRadius: '10px',
-            '&:hover': {
-              backgroundColor: '#ab7216',
-            }
-          }} onClick={handleLogout}>
-          Logout
+            backgroundColor: "#f99f0e",
+            color: "white",
+            borderRadius: "10px",
+            "&:hover": {
+              backgroundColor: "#ab7216",
+            },
+          }}
+          onClick={handleLogout}
+        >
+          {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
         </Button>
-        :
+      ) : (
         <StyledLink to="/login">
           <Button
-          sx={{
-            backgroundColor: '#f99f0e',
-            color: 'white',
-            borderRadius: '10px',
-            '&:hover': {
-              backgroundColor: '#ab7216',
-            }
-          }}>
-          Sign In
-        </Button>
+            sx={{
+              backgroundColor: "#f99f0e",
+              color: "white",
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "#ab7216",
+              },
+            }}
+          >
+            Sign In
+          </Button>
         </StyledLink>
-      }
+      )}
     </StyledNavbar>
   );
 };

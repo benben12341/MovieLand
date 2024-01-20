@@ -2,6 +2,9 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
+  USERֹֹֹ_GOOGLEֹ_LOGIN_REQUEST,
+  USER_GOOGLE_LOGIN_SUCCESS,
+  USER_GOOGLE_LOGIN_FAILED,
   USER_LOGOUT,
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
@@ -33,6 +36,12 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_SUCCESS:
       return { loading: false, userInfo: action.payload };
     case USER_LOGIN_FAIL:
+      return { loading: false, error: action.payload };
+    case USERֹֹֹ_GOOGLEֹ_LOGIN_REQUEST:
+      return { loading: true };
+    case USER_GOOGLE_LOGIN_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_GOOGLE_LOGIN_FAILED:
       return { loading: false, error: action.payload };
     case USER_LOGOUT:
       return {};

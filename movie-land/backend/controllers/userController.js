@@ -1,12 +1,16 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
+const config = require("config");
+const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const User = require("../models/UserModel");
 
-const User = require('../models/UserModel');
+const clientId =
+  "640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com";
+const googleClient = new OAuth2Client(clientId);
 
 const getAll = ({}, {}) => User.find();
 
 const getById = ({ params: { id } }, {}) =>
-  User.findById(id).select('-password');
+  User.findById(id).select("-password");
 
 const getUserProfile = async ({ user: { _id } }, res) => {
   const user = await User.findById(_id);
@@ -20,7 +24,7 @@ const getUserProfile = async ({ user: { _id } }, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 };
 
@@ -31,8 +35,8 @@ const register = async ({ body }, {}) => {
     const userToCreate = new User(body);
     const newUser = await userToCreate.save();
 
-    const token = jwt.sign({ user: newUser }, config.get('secrets.key'), {
-      expiresIn: config.get('secrets.expiresIn'),
+    const token = jwt.sign({ user: newUser }, config.get("secrets.key"), {
+      expiresIn: config.get("secrets.expiresIn"),
     });
 
     return { token };
@@ -47,12 +51,35 @@ const login = async ({ body }, res) => {
   const user = await User.findOne({ email });
 
   if (!user || !(await user.matchPassword(password))) {
-    return res.status(401).json({ error: 'Invalid email or password' });
+    return res.status(401).json({ error: "Invalid email or password" });
   }
 
-  const token = jwt.sign({ user: user }, config.get('secrets.key'));
+  const token = jwt.sign({ user: user }, config.get("secrets.key"));
 
   return { token };
+};
+
+const googleLogin = async ({ body }, res) => {
+  const { tokenId } = body;
+  console.log(tokenId);
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: tokenId,
+      audience: clientId,
+    });
+
+    const { sub: googleUserId, email, name } = ticket.getPayload();
+
+    const token = jwt.sign(
+      { googleUserId, email, name },
+      config.get("secrets.key")
+    );
+
+    return { token };
+  } catch (error) {
+    console.error("Error during Google token verification:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 module.exports = {
@@ -62,4 +89,5 @@ module.exports = {
   deleteUser,
   register,
   login,
+  googleLogin,
 };
