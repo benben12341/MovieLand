@@ -11,9 +11,13 @@ const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const messageRoutes = require('./routes/messageRoutes');
+const { createMessage } = require('./controllers/messageController');
+
 const { importData } = require('./seeder');
 const socketio = require('socket.io');
 const http = require('http');
+const { log } = require('console');
 
 dotenv.config();
 
@@ -36,6 +40,7 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/messages', messageRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
@@ -53,29 +58,17 @@ const port = config.get('app.port') || 5000;
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000',
-  },
+    origin: 'http://localhost:3000'
+  }
 });
 
-let interval;
-
-const getApiAndEmit = (socket) => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit('FromAPI', response);
-};
-
-io.on('connection', (socket) => {
-  console.log('New client connected');
-  io.emit('clients', io.engine.clientsCount);
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
+io.on('connection', socket => {
+  socket.on('new-message', message => {
+    createMessage(message);
+    io.emit('update-messages', message);
+  });
   socket.on('disconnect', () => {
-    console.log('Client disconnected');
     socket.broadcast.emit('clients', io.engine.clientsCount);
-    clearInterval(interval);
   });
 });
 
