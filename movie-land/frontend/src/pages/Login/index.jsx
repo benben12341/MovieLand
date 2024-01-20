@@ -11,14 +11,13 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
-        alignItems: 'center',
+        alignItems: "center",
         gap: "20px",
       }}
     >
       <SelfLogin />
-      <Divider sx={{ width: '100%' }} />
+      <Divider sx={{ width: "100%" }} />
       <LoginByGoogle />
-      <LogoutByGoogle />
     </Box>
   );
 };
