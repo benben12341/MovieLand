@@ -7,7 +7,7 @@
     "client": "npm start --prefix frontend",
     "start": "nodemon backend/server",
     "server": "nodemon backend/server",
-    "dev": "NODE_ENV=dev concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
@@ -30,6 +30,7 @@
     "express-async-handler": "^1.2.0",
     "express-async-router": "^0.1.15",
     "firebase": "^9.17.2",
+    "google-auth-library": "^9.4.2",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.1",
