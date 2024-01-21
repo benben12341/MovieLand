@@ -40,7 +40,9 @@ const MovieList = () => {
         </Box>
       ) : (
         filteredMovies &&
-        filteredMovies.map((movie, index) => <Movie propMovie={movie} />)
+        filteredMovies.map((movie, index) => (
+          <Movie propMovie={movie} key={index} />
+        ))
       )}
     </>
   );
