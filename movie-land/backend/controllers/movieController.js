@@ -62,22 +62,6 @@ const getMovieById = asyncHandler(async (req, res) => {
   }
 });
 
-const getMovieReviews = asyncHandler(async (req, res) => {
-  const movie = await Movie.findById(req.params.id).populate({
-    path: "reviews",
-    populate: {
-      path: "user",
-      model: "User",
-    },
-  });
-
-  if (movie) {
-    res.json(movie.reviews);
-  } else {
-    res.status(404).json({ message: "Movie not found" });
-  }
-});
-
 // @desc    Delete a Movie
 // @route   GET /api/movies/:id
 // @access  Private/Admin
@@ -183,7 +167,6 @@ const getTopMovies = asyncHandler(async (req, res) => {
 module.exports = {
   getMovies,
   getMovieById,
-  getMovieReviews,
   deleteMovie,
   createMovie,
   updateMovie,
