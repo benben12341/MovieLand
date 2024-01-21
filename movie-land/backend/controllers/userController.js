@@ -61,7 +61,7 @@ const login = async ({ body }, res) => {
 
 const googleLogin = async ({ body }, res) => {
   const { tokenId } = body;
-  console.log(tokenId);
+
   try {
     const ticket = await googleClient.verifyIdToken({
       idToken: tokenId,
@@ -69,6 +69,15 @@ const googleLogin = async ({ body }, res) => {
     });
 
     const { sub: googleUserId, email, name } = ticket.getPayload();
+    const googleUser = await User.findOne({ googleId: googleUserId });
+    
+    if (!googleUser) {
+      await new User({
+        name: name,
+        email: email,
+        googleId: googleUserId,
+      }).save();
+    }
 
     const token = jwt.sign(
       { googleUserId, email, name },
