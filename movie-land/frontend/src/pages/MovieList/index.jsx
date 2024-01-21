@@ -39,7 +39,8 @@ const MovieList = () => {
           <CircularProgress />
         </Box>
       ) : (
-        filteredMovies.map((movie, index) => <Movie movie={movie} />)
+        filteredMovies &&
+        filteredMovies.map((movie, index) => <Movie propMovie={movie} />)
       )}
     </>
   );

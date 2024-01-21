@@ -54,11 +54,11 @@ const Navbar = () => {
       {userInfo ? (
         <Button
           sx={{
-            backgroundColor: "#f99f0e",
+            backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#f99f0e",
             color: "white",
             borderRadius: "10px",
             "&:hover": {
-              backgroundColor: "#ab7216",
+              backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#ab7216",
             },
           }}
           onClick={handleLogout}
