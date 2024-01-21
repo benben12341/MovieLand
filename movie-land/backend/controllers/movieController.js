@@ -34,7 +34,7 @@ const getMovies = asyncHandler(async (req, res) => {
     ...rating,
   });
   const movies = await Movie.find({ ...keyword, ...maxPrice, ...rating });
-  
+
   res.json({ movies });
 });
 
@@ -42,13 +42,39 @@ const getMovies = asyncHandler(async (req, res) => {
 // @route   GET /api/movies/:id
 // @access  Public
 const getMovieById = asyncHandler(async (req, res) => {
-  const movie = await Movie.findById(req.params.id);
+  const movie = await Movie.findById(req.params.id).populate({
+    path: "reviews",
+    populate: {
+      path: "user",
+      model: "User",
+    },
+  });
 
   if (movie) {
+    movie.reviews = movie.reviews.sort(
+      (review1, review2) =>
+        new Date(review2.createdAt) - new Date(review1.createdAt)
+    );
     res.json(movie);
   } else {
     res.status(404);
     throw new Error("Movie not found");
+  }
+});
+
+const getMovieReviews = asyncHandler(async (req, res) => {
+  const movie = await Movie.findById(req.params.id).populate({
+    path: "reviews",
+    populate: {
+      path: "user",
+      model: "User",
+    },
+  });
+
+  if (movie) {
+    res.json(movie.reviews);
+  } else {
+    res.status(404).json({ message: "Movie not found" });
   }
 });
 
@@ -117,19 +143,12 @@ const updateMovie = asyncHandler(async (req, res) => {
 // @route   POST /api/movies/:id/reivew
 // @access  Private
 const createMovieReview = asyncHandler(async (req, res) => {
-  const { rating, comment } = req.body;
-
+  const {
+    review: { rating, comment },
+  } = req.body;
   const movie = await Movie.findById(req.params.id);
+
   if (movie) {
-    const alreadyReviewed = movie.reviews.find(
-      (r) => r.user.toString() === req.user._id.toString()
-    );
-
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error("Movie already reviewed");
-    }
-
     const review = {
       name: req.user.name,
       rating: Number(rating),
@@ -146,8 +165,6 @@ const createMovieReview = asyncHandler(async (req, res) => {
       movie.reviews.length;
 
     await movie.save();
-
-    res.status(201).json({ message: "Review added" });
   } else {
     res.status(404);
     throw new Error("Movie not found");
@@ -166,6 +183,7 @@ const getTopMovies = asyncHandler(async (req, res) => {
 module.exports = {
   getMovies,
   getMovieById,
+  getMovieReviews,
   deleteMovie,
   createMovie,
   updateMovie,
