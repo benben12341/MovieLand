@@ -16,7 +16,7 @@ const { protect, admin } = require("../middlewares/authMiddleware");
 const router = express.AsyncRouter();
 
 router.get("/", protect, admin, getAll);
-router.get("/:id", protect, admin, getById);
+router.get("/:id", getById);
 router.get("/profile", protect, getUserProfile);
 
 router.post("/", register);
