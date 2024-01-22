@@ -1,14 +1,14 @@
-const path = require("path");
-const express = require("express");
-const multer = require("multer");
+const path = require('path');
+const express = require('express');
+const multer = require('multer');
 
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, "uploads/");
+  destination: function (req, file, cb) {
+    cb(null, 'backend/uploads/');
   },
-  filename(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(
       null,
       `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
@@ -16,26 +16,33 @@ const storage = multer.diskStorage({
   },
 });
 
-function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (extname && mimetype) {
-    return cb(null, true);
+const fileFilter = (req, file, cb) => {
+  const allowedMimeTypes = [
+    'image/jpg',
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+  ];
+  if (allowedMimeTypes.includes(file.mimetype)) {
+    cb(null, true);
   } else {
-    cb("Images only!");
+    cb(
+      new Error(
+        'Invalid file type. Only JPEG, PNG, and GIF images are allowed.'
+      )
+    );
   }
-}
+};
 
 const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
+  storage: storage,
+  fileFilter: fileFilter,
 });
 
-router.post("/", upload.single("image"), (req, res) => {
+router.post('/', upload.single('image'), (req, res) => {
+  const uploadedFile = req.file;
+  console.log('Uploaded image:', uploadedFile);
+
   res.send(`/${req.file.path}`);
 });
 

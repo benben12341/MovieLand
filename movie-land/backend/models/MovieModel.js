@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ReviewSchema } = require('./ReviewModel');
+const UserSchema = require('./UserModel');
 
 const movieSchema = mongoose.Schema(
   {
@@ -21,8 +22,7 @@ const movieSchema = mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: true,
-      default: 0
+      default: 0,
     },
     director: {
       type: String,
@@ -38,16 +38,10 @@ const movieSchema = mongoose.Schema(
       default: 0
     },
     reviews: [ReviewSchema],
-    price: {
-      type: Number,
-      required: true,
-      default: 0
+    createdBy: {
+      type: mongoose.Schema.ObjectId,
+      ref: UserSchema,
     },
-    countInStock: {
-      type: Number,
-      required: true,
-      default: 0
-    }
   },
   {
     timestamps: true

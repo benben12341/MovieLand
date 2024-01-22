@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios';
 import {
   MOVIE_LIST_REQUEST,
   MOVIE_LIST_SUCCESS,
@@ -21,21 +21,21 @@ import {
   MOVIE_TOP_REQUEST,
   MOVIE_TOP_SUCCESS,
   MOVIE_TOP_FAIL,
-} from "../constants/movieConstants"
+} from '../constants/movieConstants';
 
 export const listMovies =
-  (keyword = "", maxPrice = 10000000, rating = "") =>
+  (keyword = '', maxPrice = 10000000, rating = '') =>
   async (dispatch) => {
     try {
-      dispatch({ type: MOVIE_LIST_REQUEST })
-      keyword = keyword === "all" ? "" : keyword
-      rating = rating === "all" ? "" : rating
+      dispatch({ type: MOVIE_LIST_REQUEST });
+      keyword = keyword === 'all' ? '' : keyword;
+      rating = rating === 'all' ? '' : rating;
 
       const { data } = await axios.get(
         `/api/movies?keyword=${keyword}&maxPrice=${maxPrice}&rating=${rating}`
-      )
+      );
 
-      dispatch({ type: MOVIE_LIST_SUCCESS, payload: data })
+      dispatch({ type: MOVIE_LIST_SUCCESS, payload: data });
     } catch (error) {
       dispatch({
         type: MOVIE_LIST_FAIL,
@@ -43,17 +43,17 @@ export const listMovies =
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
-      })
+      });
     }
-  }
+  };
 
 export const listMovieDetails = (id) => async (dispatch) => {
   try {
-    dispatch({ type: MOVIE_DETAILS_REQUEST })
+    dispatch({ type: MOVIE_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/movies/${id}`)
+    const { data } = await axios.get(`/api/movies/${id}`);
 
-    dispatch({ type: MOVIE_DETAILS_SUCCESS, payload: data })
+    dispatch({ type: MOVIE_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: MOVIE_DETAILS_FAIL,
@@ -61,25 +61,25 @@ export const listMovieDetails = (id) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const deleteMovie = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: MOVIE_DELETE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
-    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } }
+    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-    await axios.delete(`/api/movies/${id}`, config)
+    await axios.delete(`/api/movies/${id}`, config);
 
-    dispatch({ type: MOVIE_DELETE_SUCCESS })
+    dispatch({ type: MOVIE_DELETE_SUCCESS });
   } catch (error) {
     dispatch({
       type: MOVIE_DELETE_FAIL,
@@ -87,25 +87,32 @@ export const deleteMovie = (id) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
-export const createMovie = () => async (dispatch, getState) => {
+export const createMovie = (movie) => async (dispatch, getState) => {
   try {
     dispatch({
       type: MOVIE_CREATE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
-    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } }
+    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-    const { data } = await axios.post(`/api/movies`, {}, config)
+    const { image } = movie;
+    const formData = new FormData();
+    formData.append('image', image);
 
-    dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data })
+    const response = await axios.post('/api/upload', formData, config);
+
+    const movieWithImage = {...movie, image: response.data}
+    const { data } = await axios.post(`/api/movies`, movieWithImage, config);
+
+    dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: MOVIE_CREATE_FAIL,
@@ -113,30 +120,30 @@ export const createMovie = () => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const updateMovie = (movie) => async (dispatch, getState) => {
   try {
     dispatch({
       type: MOVIE_UPDATE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.put(`/api/movies/${movie._id}`, movie, config)
+    const { data } = await axios.put(`/api/movies/${movie._id}`, movie, config);
 
-    dispatch({ type: MOVIE_UPDATE_SUCCESS, payload: data })
+    dispatch({ type: MOVIE_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: MOVIE_UPDATE_FAIL,
@@ -144,31 +151,31 @@ export const updateMovie = (movie) => async (dispatch, getState) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const createMovieReview =
   (movieId, review) => async (dispatch, getState) => {
     try {
       dispatch({
         type: MOVIE_CREATE_REVIEW_REQUEST,
-      })
+      });
 
       const {
         userLogin: { userInfo },
-      } = getState()
+      } = getState();
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo.token}`,
         },
-      }
+      };
 
-      await axios.post(`/api/movies/${movieId}/reviews`, review, config)
+      await axios.post(`/api/movies/${movieId}/reviews`, review, config);
 
-      dispatch({ type: MOVIE_CREATE_REVIEW_SUCCESS })
+      dispatch({ type: MOVIE_CREATE_REVIEW_SUCCESS });
     } catch (error) {
       dispatch({
         type: MOVIE_CREATE_REVIEW_FAIL,
@@ -176,17 +183,17 @@ export const createMovieReview =
           error.response && error.response.data.message
             ? error.response.data.message
             : error.message,
-      })
+      });
     }
-  }
+  };
 
 export const listTopMovies = () => async (dispatch) => {
   try {
-    dispatch({ type: MOVIE_TOP_REQUEST })
+    dispatch({ type: MOVIE_TOP_REQUEST });
 
-    const { data } = await axios.get(`/api/movies/top`)
+    const { data } = await axios.get(`/api/movies/top`);
 
-    dispatch({ type: MOVIE_TOP_SUCCESS, payload: data })
+    dispatch({ type: MOVIE_TOP_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: MOVIE_TOP_FAIL,
@@ -194,6 +201,6 @@ export const listTopMovies = () => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};

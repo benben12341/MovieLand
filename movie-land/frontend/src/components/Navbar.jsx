@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+
 import { logout } from "../actions/userActions";
 import LogoutByGoogle from "./LogoutByGoogle";
 import { useAuth } from "../context/AuthContext";
@@ -33,6 +34,7 @@ const StyledLink = styled(Link)`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -41,6 +43,10 @@ const Navbar = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+  };
+
+  const handleClick = (e) => {
+    navigate('/movie-insert')
   };
 
   return (
@@ -52,19 +58,35 @@ const Navbar = () => {
         </StyledLink>
       </Box>
       {userInfo ? (
-        <Button
-          sx={{
-            backgroundColor: "#f99f0e",
-            color: "white",
-            borderRadius: "10px",
-            "&:hover": {
-              backgroundColor: "#ab7216",
-            },
-          }}
-          onClick={handleLogout}
-        >
-          {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
-        </Button>
+        <Box>
+          <Button
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              borderRadius: "10px",
+              marginRight: '10px',
+              "&:hover": {
+                backgroundColor: "whitesmoke",
+              },
+            }}
+            onClick={handleClick}
+          >
+            {'Add Movie'}
+          </Button>
+          <Button
+            sx={{
+              backgroundColor: "#f99f0e",
+              color: "white",
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "#ab7216",
+              },
+            }}
+            onClick={handleLogout}
+          >
+            {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
+          </Button>
+        </Box>
       ) : (
         <StyledLink to="/login">
           <Button

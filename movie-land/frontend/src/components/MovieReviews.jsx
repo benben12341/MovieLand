@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Stack, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Box, Stack, Typography, CircularProgress } from "@mui/material";
+
 import RatingStars from "./RatingStars";
 
 const MovieReviews = ({ movieTitle }) => {
