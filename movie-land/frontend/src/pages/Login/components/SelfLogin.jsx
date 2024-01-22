@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 import Message from "../../../components/Message";
-import Loader from "../../../components/Loader";
 import FormContainer from "../../../components/FormContainer";
 import { login } from "../../../actions/userActions";
 import {
@@ -28,7 +27,7 @@ const SelfLogin = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
-  const { isAuthenticatedWithGoogle, setAuthenticatedWithGoogle } = useAuth();
+  const { setAuthenticatedWithGoogle } = useAuth();
 
   useEffect(() => {
     if (userInfo) {
