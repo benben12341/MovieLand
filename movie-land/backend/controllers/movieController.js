@@ -122,9 +122,7 @@ const createMovieReview = asyncHandler(async (req, res) => {
   const {
     review: { rating, comment },
   } = req.body;
-  console.log("1");
   const movie = await Movie.findById(req.params.id);
-  console.log("2");
 
   if (movie) {
     const review = {
@@ -133,22 +131,17 @@ const createMovieReview = asyncHandler(async (req, res) => {
       comment,
       user: req.user._id,
     };
-    console.log("3");
 
     movie.reviews.push(review);
-    console.log("4");
 
     movie.numReviews = movie.reviews.length;
-    console.log("5");
 
     movie.rating =
       movie.reviews.reduce((acc, item) => item.rating + acc, 0) /
       movie.reviews.length;
-    console.log("6");
 
     const updatedMovie = await movie.save();
     res.json(updatedMovie);
-    console.log("7");
   } else {
     res.status(404);
     throw new Error("Movie not found");
