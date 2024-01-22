@@ -5,11 +5,10 @@ const {
   googleLogin,
   register,
   getUserProfile,
-  // updateUserProfile,
+  updateUserProfile,
   getAll,
   deleteUser,
   getById,
-  // updateUser,
 } = require("../controllers/userController");
 const { protect, admin } = require("../middlewares/authMiddleware");
 
@@ -23,8 +22,7 @@ router.post("/", register);
 router.post("/login", login);
 router.post("/googleLogin", googleLogin);
 
-// router.put('/profile', protect, updateUserProfile);
-// router.put('/:id', protect, admin, updateUser);
+router.put("/profile", updateUserProfile);
 
 router.delete("/:id", protect, admin, deleteUser);
 
