@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Box, Stack, Card, CardContent, CardMedia, CardActions, Typography, Collapse, IconButton} from "@mui/material";
+import { Box, Stack, Card, CardContent, CardMedia, CardActions, Typography, Collapse, IconButton, Divider} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import MovieExternalReviews from "./MovieExternalReviews";
 import AddCommentIcon from "@mui/icons-material/AddComment";
-import { useState } from "react";
+
 import { useSelector, useDispatch } from "react-redux";
 import ReviewDialog from "./ReviewDialog";
 import { createMovieReview } from "../actions/movieActions";
