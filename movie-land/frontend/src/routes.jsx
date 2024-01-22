@@ -8,6 +8,7 @@ import UserList from './pages/UserList';
 import UserEdit from './pages/UserEdit';
 import MovieList from './pages/MovieList';
 import MovieEdit from './pages/MovieEdit';
+import MovieInsert from './pages/MovieInsert';
 
 const MovieLandRoutes = () => (
   <Routes>
@@ -15,6 +16,7 @@ const MovieLandRoutes = () => (
     <Route path='/register' element={<Register />} />
     <Route path='/profile' element={<Profile />} />
     <Route path='/movie/:id' element={<MovieDetails />} />
+    <Route path='/movie-insert' element={<MovieInsert />} />
     <Route path='/admin/userlist' element={<UserList />} />
     <Route path='/admin/user/:id/edit' element={<UserEdit />} />
     <Route path='/admin/movielist' element={<MovieList />} />

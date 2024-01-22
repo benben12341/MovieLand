@@ -21,7 +21,7 @@ const LoginByGoogle = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate('/');
     }
   }, [navigate, userInfo]);
 

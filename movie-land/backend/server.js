@@ -27,7 +27,6 @@ const app = express();
 
 app.use(cors());
 
-// log request
 app.use(morgan('dev'));
 
 app.use(express.json());
@@ -53,17 +52,16 @@ app.use(notFound);
 app.use(errorHandler);
 
 const port = config.get('app.port') || 5000;
-// importData()
 
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000'
-  }
+    origin: 'http://localhost:3000',
+  },
 });
 
-io.on('connection', socket => {
-  socket.on('new-message', message => {
+io.on('connection', (socket) => {
+  socket.on('new-message', (message) => {
     createMessage(message);
     io.emit('update-messages', message);
   });

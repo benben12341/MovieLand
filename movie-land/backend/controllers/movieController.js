@@ -81,17 +81,9 @@ const deleteMovie = asyncHandler(async (req, res) => {
 // @route   POST /api/movies
 // @access  Private/Admin
 const createMovie = asyncHandler(async (req, res) => {
-  const movie = new Movie({
-    name: "No name",
-    price: 0,
-    user: req.user._id,
-    image: "/images/sample.jpg",
-    author: "No author",
-    genre: "Unknown",
-    countInStock: 0,
-    numReviews: 0,
-    description: "No description",
-  });
+  const { body, user } = req;
+
+  const movie = new Movie({ ...body, createdBy: user._id });
 
   const createdMovie = await movie.save();
   res.status(201).json(createdMovie);
@@ -148,7 +140,8 @@ const createMovieReview = asyncHandler(async (req, res) => {
       movie.reviews.reduce((acc, item) => item.rating + acc, 0) /
       movie.reviews.length;
 
-    await movie.save();
+    const updatedMovie = await movie.save();
+    res.json(updatedMovie);
   } else {
     res.status(404);
     throw new Error("Movie not found");

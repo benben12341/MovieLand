@@ -15,8 +15,8 @@ connectDB();
 
 const importData = async () => {
   try {
-    await Movie.deleteMany();
-    await Movie.insertMany(movies);
+    // await Movie.deleteMany();
+    // await Movie.insertMany(movies);
     // await Order.deleteMany()
     // await Movie.deleteMany()
     // await User.deleteMany()

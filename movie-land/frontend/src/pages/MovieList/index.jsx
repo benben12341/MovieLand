@@ -25,8 +25,8 @@ const MovieList = () => {
       searchTerm === ""
         ? movies
         : movies.filter((movie) =>
-            movie.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
+          movie.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
     setFilteredMovies(filtered);
   };
