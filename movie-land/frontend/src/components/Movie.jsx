@@ -23,7 +23,12 @@ import Review from "./Review";
 const ExpandMore = styled((props) => {
   const { expand, text, ...other } = props;
   return (
-    <Stack spacing={1} direction={"row"} alignItems={"center"}>
+    <Stack
+      spacing={1}
+      direction={"row"}
+      alignItems={"center"}
+      marginLeft={"auto"}
+    >
       <Typography>{text}</Typography> <IconButton {...other} />
     </Stack>
   );
