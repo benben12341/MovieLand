@@ -52,19 +52,24 @@ const Navbar = () => {
         </StyledLink>
       </Box>
       {userInfo ? (
-        <Button
-          sx={{
-            backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#f99f0e",
-            color: "white",
-            borderRadius: "10px",
-            "&:hover": {
-              backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#ab7216",
-            },
-          }}
-          onClick={handleLogout}
-        >
-          {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
-        </Button>
+        <>
+        <StyledLink to="/profile" style={{paddingLeft: '70%'}}>
+            <h1>Profile</h1>
+          </StyledLink>
+          <Button
+            sx={{
+              backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#f99f0e",
+              color: "white",
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#ab7216",
+              },
+            }}
+            onClick={handleLogout}
+          >
+            {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
+          </Button>
+        </>
       ) : (
         <StyledLink to="/login">
           <Button
