@@ -1,7 +1,7 @@
-const asyncHandler = require('express-async-handler');
-const { Order } = require('../models/orderModel');
-const { getMovieById } = require('./movieController');
-const { Movie } = require('../models/MovieModel');
+const asyncHandler = require("express-async-handler");
+const { Order } = require("../models/orderModel");
+const { getMovieById } = require("./movieController");
+const { Movie } = require("../models/MovieModel");
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -14,12 +14,12 @@ const addOrderItems = asyncHandler(async (req, res) => {
     itemsPrice,
     taxPrice,
     shippingPrice,
-    totalPrice
+    totalPrice,
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
-    throw new Error('No order items');
+    throw new Error("No order items");
 
     return;
   } else {
@@ -31,7 +31,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
       itemsPrice,
       taxPrice,
       shippingPrice,
-      totalPrice
+      totalPrice,
     });
 
     const createdOrder = await order.save();
@@ -45,15 +45,15 @@ const addOrderItems = asyncHandler(async (req, res) => {
 // @access  Private
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
-    'user',
-    'name email'
+    "user",
+    "name email"
   );
 
   if (order) {
     res.json(order);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 });
 
@@ -70,7 +70,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
       id: req.body.id,
       status: req.body.status,
       update_time: req.body.update_time,
-      email_address: req.body.payer.email_address
+      email_address: req.body.payer.email_address,
     };
 
     const updatedOrder = await order.save();
@@ -78,7 +78,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     res.json(updatedOrder);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 });
 
@@ -97,7 +97,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     res.json(updatedOrder);
   } else {
     res.status(404);
-    throw new Error('Order not found');
+    throw new Error("Order not found");
   }
 });
 
@@ -114,7 +114,7 @@ const getMyOrder = asyncHandler(async (req, res) => {
 // @route   GET /api/orders
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'id name');
+  const orders = await Order.find({}).populate("user", "id name");
 
   res.json(orders);
 });
@@ -122,14 +122,14 @@ const getOrders = asyncHandler(async (req, res) => {
 const getOrdersByMovies = asyncHandler(async (req, res) => {
   const aggregatorOpts = [
     {
-      $unwind: '$orderItems'
+      $unwind: "$orderItems",
     },
     {
       $group: {
-        _id: '$orderItems.movie',
-        count: { $sum: 1 }
-      }
-    }
+        _id: "$orderItems.movie",
+        count: { $sum: 1 },
+      },
+    },
   ];
 
   const orders = await Order.aggregate(aggregatorOpts).exec();
@@ -139,7 +139,7 @@ const getOrdersByMovies = asyncHandler(async (req, res) => {
     const movie = await Movie.findById(order._id);
     movieOrders.push({
       name: movie?.name,
-      pv: order.count
+      pv: order.count,
     });
   }
 
@@ -153,5 +153,5 @@ module.exports = {
   updateOrderToDelivered,
   getMyOrder,
   getOrders,
-  getOrdersByMovies
+  getOrdersByMovies,
 };

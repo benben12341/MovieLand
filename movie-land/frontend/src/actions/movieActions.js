@@ -155,8 +155,12 @@ export const updateMovie = (movie) => async (dispatch, getState) => {
   }
 };
 
-export const createMovieReview =
-  (movieId, review) => async (dispatch, getState) => {
+export const createMovieReview = (
+  movieId,
+  review,
+  isAuthenticatedWithGoogle
+) => {
+  return async (dispatch, getState) => {
     try {
       dispatch({
         type: MOVIE_CREATE_REVIEW_REQUEST,
@@ -173,7 +177,11 @@ export const createMovieReview =
         },
       };
 
-      await axios.post(`/api/movies/${movieId}/reviews`, review, config);
+      await axios.post(
+        `/api/movies/${movieId}/reviews`,
+        { review, isAuthenticatedWithGoogle },
+        config
+      );
 
       dispatch({ type: MOVIE_CREATE_REVIEW_SUCCESS });
     } catch (error) {
@@ -186,6 +194,7 @@ export const createMovieReview =
       });
     }
   };
+};
 
 export const listTopMovies = () => async (dispatch) => {
   try {

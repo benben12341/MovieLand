@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, Stack, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import Review from "./Review";
 
-import RatingStars from "./RatingStars";
-
-const MovieReviews = ({ movieTitle }) => {
-  const [reviews, setReviews] = useState([]);
+const MovieExternalReviews = ({ movie }) => {
+  const [externalReviews, setExternalReviews] = useState([]);
   const [movieId, setMovieId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const MovieReviews = ({ movieTitle }) => {
     const fetchMovieId = async () => {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movieTitle}`
+          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${movie.name}`
         );
         const firstResult = response.data.results[0];
         if (firstResult) {
@@ -31,17 +31,22 @@ const MovieReviews = ({ movieTitle }) => {
     };
 
     fetchMovieId();
-  }, [movieTitle]);
+  }, [movie]);
 
   useEffect(() => {
-    const fetchReviews = async () => {
+    const fetchExternalReviews = async () => {
       if (movieId) {
         try {
           const response = await axios.get(
             `https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}`
           );
 
-          setReviews(response.data.results);
+          setExternalReviews(
+            response.data.results.sort(
+              (review1, review2) =>
+                new Date(review2.created_at) - new Date(review1.created_at)
+            )
+          );
         } catch (error) {
           setError(
             error.message || "An error occurred while fetching reviews."
@@ -52,38 +57,32 @@ const MovieReviews = ({ movieTitle }) => {
       }
     };
 
-    fetchReviews();
+    fetchExternalReviews();
   }, [movieId]);
 
   return (
     <>
-      <Typography variant="h5" fontWeight={"bold"} textAlign={"start"}>
-        Movie Reviews
+      <Typography
+        paddingTop={"10px"}
+        variant="h5"
+        fontWeight={"bold"}
+        textAlign={"start"}
+      >
+        MovieLand External Reviews
       </Typography>
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <CircularProgress />
         </Box>
       ) : (
-        reviews.map((review) => (
+        externalReviews.map((review) => (
           <li key={review.id}>
-            <Box sx={{ textAlign: "start" }}>
-              <Stack spacing={1} direction={"row"} alignItems={"center"}>
-                <Typography variant="h4">{review.author} |</Typography>
-                <Typography variant="h5">
-                  {new Date(review.created_at).toLocaleString()}
-                </Typography>
-              </Stack>
-              <RatingStars
-                style={{ display: "flex", alignItems: "center" }}
-                rating={review.author_details.rating}
-              />
-              <Typography paragraph>
-                {review.content.length <= 700
-                  ? review.content
-                  : review.content.substr(0, 700) + "..."}
-              </Typography>
-            </Box>
+            <Review
+              userName={review.author}
+              content={review.content}
+              rating={review.author_details.rating}
+              createAt={review.created_at}
+            ></Review>
           </li>
         ))
       )}
@@ -91,4 +90,4 @@ const MovieReviews = ({ movieTitle }) => {
   );
 };
 
-export default MovieReviews;
+export default MovieExternalReviews;

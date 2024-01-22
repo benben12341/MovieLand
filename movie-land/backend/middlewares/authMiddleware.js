@@ -7,26 +7,29 @@ const User = require('../models/UserModel');
 const protect = asyncHandler(async (req, res, next) => {
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      const token = req.headers.authorization.split(' ')[1];
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, config.get("secrets.key"));
 
-      const decoded = jwt.verify(token, config.get('secrets.key'));
-
-      req.user = await User.findById(decoded.user._id).select('-password');
+      if (!req.body.isAuthenticatedWithGoogle) {
+        req.user = await User.findById(decoded.user._id).select("-password");
+      } else {
+        req.user = await User.findOne({ googleId: decoded.googleUserId });
+      }
 
       next();
     } catch (error) {
       console.error(error);
       res.status(401);
-      throw new Error('Unauthorized, token is broken.');
+      throw new Error("Unauthorized, token is broken.");
     }
   }
   const token = req.headers.authorization.split(' ')[1];
   if (!token) {
     res.status(401);
-    throw new Error('Unauthorized, token is missing.');
+    throw new Error("Unauthorized, token is missing.");
   }
 });
 
@@ -35,7 +38,7 @@ const admin = (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error('Unauthorized, missing admin permission.');
+    throw new Error("Unauthorized, missing admin permission.");
   }
 };
 
