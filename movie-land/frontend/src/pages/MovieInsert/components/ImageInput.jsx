@@ -1,7 +1,8 @@
 
-import { TextField, Box } from '@mui/material';
+import { TextField, Typography, Box } from '@mui/material';
 
-const ImageInput = ({ onChange }) => {
+const ImageInput = ({ onChange, initialImage = null }) => {
+    console.log({ initialImage });
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
@@ -23,6 +24,10 @@ const ImageInput = ({ onChange }) => {
                 onChange={handleImageChange}
                 InputLabelProps={{ shrink: true }}
             />
+            {initialImage && (
+                <Typography variant="caption" color="textSecondary">
+                    Selected Image: {initialImage}
+                </Typography>)}
         </Box>
     );
 };

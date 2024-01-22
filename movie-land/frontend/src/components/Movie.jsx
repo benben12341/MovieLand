@@ -1,16 +1,7 @@
 import { useState } from 'react';
-import {
-  Box,
-  Stack,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-  Typography,
-  Collapse,
-  IconButton,
-  Divider,
-} from '@mui/material';
+import { Box, Stack, Card, CardContent, CardMedia, CardActions, Typography, Collapse, IconButton, Divider} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import MovieExternalReviews from './MovieExternalReviews';
@@ -23,6 +14,7 @@ import { useAuth } from '../context/AuthContext';
 import { listMovieDetails } from '../actions/movieActions';
 import { useEffect } from 'react';
 import Review from './Review';
+import MovieEdit from "../pages/MovieEdit";
 
 const ExpandMore = styled((props) => {
   const { expand, text, ...other } = props;
@@ -48,6 +40,8 @@ const Movie = ({ propMovie }) => {
   const dispatch = useDispatch();
   const { isAuthenticatedWithGoogle } = useAuth();
 
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [currentMovie, setCurrentMovie] = useState(propMovie);
   const [expanded, setExpanded] = useState(false);
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
@@ -72,6 +66,14 @@ const Movie = ({ propMovie }) => {
 
   const handleCloseReviewDialog = () => {
     setReviewDialogOpen(false);
+  };
+
+  const handleToggleEditDialog = () => {
+    setIsEditDialogOpen(x => !x);
+  };
+
+  const handleToggleDeleteDialog = () => {
+    setIsDeleteDialogOpen(x => !x);
   };
 
   useEffect(() => {
@@ -198,6 +200,12 @@ const Movie = ({ propMovie }) => {
           >
             <ExpandMoreIcon />
           </ExpandMore>
+          <IconButton onClick={handleToggleEditDialog}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={handleToggleDeleteDialog}>
+            <DeleteIcon />
+          </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
