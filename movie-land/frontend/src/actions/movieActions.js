@@ -91,38 +91,43 @@ export const deleteMovie = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createMovie = (movie) => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: MOVIE_CREATE_REQUEST,
-    });
+export const createMovie =
+  (movie, isAuthenticatedWithGoogle) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: MOVIE_CREATE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
+      const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-    const { image } = movie;
-    const formData = new FormData();
-    formData.append('image', image);
+      const { image } = movie;
+      const formData = new FormData();
+      formData.append('image', image);
 
-    const response = await axios.post('/api/upload', formData, config);
+      const response = await axios.post('/api/upload', formData, config);
 
-    const movieWithImage = {...movie, image: response.data}
-    const { data } = await axios.post(`/api/movies`, movieWithImage, config);
+      const movieWithImage = {
+        ...movie,
+        image: response.data,
+        isAuthenticatedWithGoogle,
+      };
+      const { data } = await axios.post(`/api/movies`, movieWithImage, config);
 
-    dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: MOVIE_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: MOVIE_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const updateMovie = (movie) => async (dispatch, getState) => {
   try {
