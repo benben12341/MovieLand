@@ -58,7 +58,7 @@ const Navbar = () => {
         </StyledLink>
       </Box>
       {userInfo ? (
-        <Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "10px", marginLeft: "auto" }}>
           <Button
             sx={{
               backgroundColor: "white",
@@ -86,6 +86,9 @@ const Navbar = () => {
           >
             {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
           </Button>
+          <StyledLink to="/profile">
+            <h1>Profile</h1>
+          </StyledLink>
         </Box>
       ) : (
         <StyledLink to="/login">
@@ -104,7 +107,7 @@ const Navbar = () => {
         </StyledLink>
       )}
     </StyledNavbar>
-  );
+  );  
 };
 
 export default Navbar;

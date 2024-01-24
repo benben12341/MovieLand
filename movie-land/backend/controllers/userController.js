@@ -2,6 +2,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/UserModel');
+const { generateToken } = require("../utils/generateToken")
 
 const clientId =
   '640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com';
@@ -39,7 +40,7 @@ const register = async ({ body }, {}) => {
       expiresIn: config.get('secrets.expiresIn')
     });
 
-    return { token };
+    return { token, id: newUser.id, name: newUser.name };
   } catch (error) {
     console.error(error);
   }
@@ -70,7 +71,7 @@ const googleLogin = async ({ body }, res) => {
 
     const { sub: googleUserId, email, name } = ticket.getPayload();
     const googleUser = await User.findOne({ googleId: googleUserId });
-    
+
     if (!googleUser) {
       await new User({
         name: name,
@@ -91,6 +92,32 @@ const googleLogin = async ({ body }, res) => {
   }
 };
 
+const updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.body.user._id);
+
+  if (user) {
+    user.name = req.body.user.name || user.name;
+    user.email = req.body.user.email || user.email;
+
+    if (req.body.user.password) {
+      user.password = req.body.user.password;
+    }
+
+    const updateUser = await user.save();
+
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+      token: generateToken(updateUser._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+};
+
 module.exports = {
   getAll,
   getById,
@@ -98,5 +125,6 @@ module.exports = {
   deleteUser,
   register,
   login,
-  googleLogin
+  googleLogin,
+  updateUserProfile
 };
