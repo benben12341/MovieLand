@@ -138,7 +138,7 @@ const Movie = ({ propMovie }) => {
               width: '70%',
             }}
           >
-            <Box sx={{ width: '60%' }}>
+            <Box sx={{ width: '60%', wordWrap: 'break-word' }}>
               <Typography gutterBottom variant='h5' component='div'>
                 {currentMovie.name}
               </Typography>
@@ -157,7 +157,10 @@ const Movie = ({ propMovie }) => {
             >
               <Box fontWeight='fontWeightBold'>
                 Rating:
-                <Typography display='inline'> {currentMovie.rating}</Typography>
+                <Typography display='inline'>
+                  {' '}
+                  {parseFloat(currentMovie.rating).toFixed(2)}
+                </Typography>
               </Box>
               <Box fontWeight='fontWeightBold'>
                 Genre:
@@ -166,6 +169,7 @@ const Movie = ({ propMovie }) => {
               <Box fontWeight='fontWeightBold'>
                 Director:
                 <Typography display='inline'>
+                  {' '}
                   {currentMovie.director}
                 </Typography>
               </Box>
