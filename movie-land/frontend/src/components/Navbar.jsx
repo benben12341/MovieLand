@@ -64,7 +64,7 @@ const Navbar = () => {
               backgroundColor: "white",
               color: "black",
               borderRadius: "10px",
-              marginRight: '10px',
+              marginRight: '5px',
               "&:hover": {
                 backgroundColor: "whitesmoke",
               },
@@ -75,11 +75,12 @@ const Navbar = () => {
           </Button>
           <Button
             sx={{
-              backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#f99f0e",
-              color: "white",
+              backgroundColor: "white",
+              color: "black",
               borderRadius: "10px",
+              marginRight: '-8px',
               "&:hover": {
-                backgroundColor: isAuthenticatedWithGoogle ? "unset" : "#ab7216",
+                backgroundColor: "whitesmoke",
               },
             }}
             onClick={handleLogout}
@@ -87,18 +88,31 @@ const Navbar = () => {
             {isAuthenticatedWithGoogle ? <LogoutByGoogle /> : "Logout"}
           </Button>
           <StyledLink to="/profile">
-            <h1>Profile</h1>
+            <Button
+              sx={{
+                backgroundColor: "white",
+                color: "black",
+                borderRadius: "10px",
+                marginLeft: '-4px !important',
+                "&:hover": {
+                  backgroundColor: "whitesmoke",
+                },
+              }}
+            >
+              Profile
+            </Button>
           </StyledLink>
         </Box>
       ) : (
         <StyledLink to="/login">
           <Button
             sx={{
-              backgroundColor: "#f99f0e",
-              color: "white",
+              backgroundColor: "white",
+              color: "black",
               borderRadius: "10px",
+              marginRight: '5px',
               "&:hover": {
-                backgroundColor: "#ab7216",
+                backgroundColor: "whitesmoke",
               },
             }}
           >
@@ -107,7 +121,7 @@ const Navbar = () => {
         </StyledLink>
       )}
     </StyledNavbar>
-  );  
+  );
 };
 
 export default Navbar;
