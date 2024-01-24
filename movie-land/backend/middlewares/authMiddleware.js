@@ -1,7 +1,8 @@
-const config = require("config");
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
-const User = require("../models/UserModel");
+const config = require('config');
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+
+const User = require('../models/UserModel');
 
 const protect = asyncHandler(async (req, res, next) => {
   if (
@@ -25,7 +26,7 @@ const protect = asyncHandler(async (req, res, next) => {
       throw new Error("Unauthorized, token is broken.");
     }
   }
-
+  const token = req.headers.authorization.split(' ')[1];
   if (!token) {
     res.status(401);
     throw new Error("Unauthorized, token is missing.");

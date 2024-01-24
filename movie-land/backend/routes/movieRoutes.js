@@ -7,12 +7,12 @@ const {
   createMovie,
   updateMovie,
   createMovieReview,
-  getTopMovies
+  getTopMovies,
 } = require('../controllers/movieController');
 const { protect, admin } = require('../middlewares/authMiddleware');
 
 router.get('/', getMovies);
-router.post('/', protect, admin, createMovie);
+router.post('/', protect, createMovie);
 router.post('/:id/reviews', protect, createMovieReview);
 router.get('/top', getTopMovies);
 router.get('/:id', getMovieById);

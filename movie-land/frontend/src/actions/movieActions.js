@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   MOVIE_LIST_REQUEST,
   MOVIE_LIST_SUCCESS,
@@ -21,15 +21,15 @@ import {
   MOVIE_TOP_REQUEST,
   MOVIE_TOP_SUCCESS,
   MOVIE_TOP_FAIL,
-} from "../constants/movieConstants";
+} from '../constants/movieConstants';
 
 export const listMovies =
-  (keyword = "", maxPrice = 10000000, rating = "") =>
+  (keyword = '', maxPrice = 10000000, rating = '') =>
   async (dispatch) => {
     try {
       dispatch({ type: MOVIE_LIST_REQUEST });
-      keyword = keyword === "all" ? "" : keyword;
-      rating = rating === "all" ? "" : rating;
+      keyword = keyword === 'all' ? '' : keyword;
+      rating = rating === 'all' ? '' : rating;
 
       const { data } = await axios.get(
         `/api/movies?keyword=${keyword}&maxPrice=${maxPrice}&rating=${rating}`
@@ -91,31 +91,43 @@ export const deleteMovie = (id) => async (dispatch, getState) => {
   }
 };
 
-export const createMovie = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: MOVIE_CREATE_REQUEST,
-    });
+export const createMovie =
+  (movie, isAuthenticatedWithGoogle) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: MOVIE_CREATE_REQUEST,
+      });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
+      const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
 
-    const { data } = await axios.post(`/api/movies`, {}, config);
+      const { image } = movie;
+      const formData = new FormData();
+      formData.append('image', image);
 
-    dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: MOVIE_CREATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      const response = await axios.post('/api/upload', formData, config);
+
+      const movieWithImage = {
+        ...movie,
+        image: response.data,
+        isAuthenticatedWithGoogle,
+      };
+      const { data } = await axios.post(`/api/movies`, movieWithImage, config);
+
+      dispatch({ type: MOVIE_CREATE_SUCCESS, payload: data });
+    } catch (error) {
+      dispatch({
+        type: MOVIE_CREATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const updateMovie = (movie) => async (dispatch, getState) => {
   try {
@@ -129,7 +141,7 @@ export const updateMovie = (movie) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -165,7 +177,7 @@ export const createMovieReview = (
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo.token}`,
         },
       };
