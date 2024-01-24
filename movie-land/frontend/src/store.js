@@ -52,7 +52,6 @@ const reducer = combineReducers({
   moviesOrderList: moviesOrderListReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
-  userUpdate: userUpdateReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")

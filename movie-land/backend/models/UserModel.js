@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    image: {
+      type: String,
+      default: '/uploads/userImage.png',
+    },
     isAdmin: {
       type: Boolean,
       required: true,

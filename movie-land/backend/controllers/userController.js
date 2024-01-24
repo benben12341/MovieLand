@@ -21,6 +21,7 @@ const getUserProfile = async ({ user: { _id } }, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      image: '/uploads/userImage.png',
       isAdmin: user.isAdmin
     });
   } else {
@@ -98,6 +99,7 @@ const updateUserProfile = async (req, res) => {
   if (user) {
     user.name = req.body.user.name || user.name;
     user.email = req.body.user.email || user.email;
+    user.image = req.body.user.image || user.image;
 
     if (req.body.user.password) {
       user.password = req.body.user.password;
@@ -109,6 +111,7 @@ const updateUserProfile = async (req, res) => {
       _id: updateUser._id,
       name: updateUser.name,
       email: updateUser.email,
+      image: updateUser.image,
       isAdmin: updateUser.isAdmin,
       token: generateToken(updateUser._id),
     });
