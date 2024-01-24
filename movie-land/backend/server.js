@@ -2,6 +2,8 @@ const config = require('config');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
+const http = require('http');
+const https = require('https');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const { notFound, errorHandler } = require('./middlewares/errorMiddleware');
@@ -16,7 +18,6 @@ const { createMessage } = require('./controllers/messageController');
 
 const { importData } = require('./seeder');
 const socketio = require('socket.io');
-const http = require('http');
 const { log } = require('console');
 
 dotenv.config();
@@ -53,10 +54,21 @@ app.use(errorHandler);
 
 const port = config.get('app.port') || 5000;
 
-const server = http.createServer(app);
+let server;
+if (process.env.NODE_ENV !== 'production') {
+  console.log(`development:${port}`);
+  server = http.createServer(app).listen(port);
+} else {
+  const options = {
+    key: fs.readFileSync('./client-key-pem'),
+    cert: fs.readFileSync('./client-cert.pem')
+  };
+  server = https.createServer(options, app).listen(443);
+}
+
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:9090'
   },
 });
 
@@ -69,5 +81,3 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('clients', io.engine.clientsCount);
   });
 });
-
-server.listen(port, () => console.log(`Server is listening on ${port}.`));
