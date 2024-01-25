@@ -11,7 +11,6 @@ const { connectDB } = require('./config/db');
 
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require('./routes/userRoutes');
-const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const { createMessage } = require('./controllers/messageController');
@@ -38,7 +37,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/movies', movieRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/messages', messageRoutes);
 

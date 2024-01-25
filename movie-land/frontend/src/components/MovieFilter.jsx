@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const MovieFilter = ({ onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = event => {
     const newSearchTerm = event.target.value;
     setSearchTerm(newSearchTerm);
     onFilterChange(newSearchTerm);
@@ -14,18 +14,18 @@ const MovieFilter = ({ onFilterChange }) => {
 
   return (
     <TextField
-      fullWidth
-      variant="outlined"
-      margin="normal"
-      label="Search Movies"
+      sx={{ width: '80%' }}
+      variant='outlined'
+      margin='normal'
+      label='Search Movies'
       value={searchTerm}
       onChange={handleSearchChange}
       InputProps={{
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment position='start'>
             <SearchIcon />
           </InputAdornment>
-        ),
+        )
       }}
     />
   );
