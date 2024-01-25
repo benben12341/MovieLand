@@ -1,30 +1,39 @@
-import { useState } from 'react';
-import { Box, Stack, Card, CardContent, CardMedia, CardActions, Typography, Collapse, IconButton, Divider} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Box,
+  Stack,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Typography,
+  Collapse,
+  IconButton,
+  Divider
+} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
-import MovieExternalReviews from './MovieExternalReviews';
 import AddCommentIcon from '@mui/icons-material/AddComment';
-
-import { useSelector, useDispatch } from 'react-redux';
-import ReviewDialog from './ReviewDialog';
-import { createMovieReview } from '../actions/movieActions';
 import { useAuth } from '../context/AuthContext';
-import { listMovieDetails } from '../actions/movieActions';
-import { useEffect } from 'react';
-import Review from './Review';
-import MovieEdit from "../pages/MovieEdit";
 
-const ExpandMore = styled((props) => {
+import Review from './Review';
+import ReviewDialog from './ReviewDialog';
+import DeleteConfirmationDialog from './ConfirmationDialog';
+import MovieExternalReviews from './MovieExternalReviews';
+import { createMovieReview, listMovieDetails } from '../actions/movieActions';
+import MovieEdit from '../pages/MovieEdit';
+
+const ExpandMore = styled(props => {
   const { expand, text, ...other } = props;
   return (
     <Stack
       spacing={1}
       direction={'row'}
       alignItems={'center'}
-      marginLeft={'auto'}
-    >
+      marginLeft={'auto'}>
       <Typography>{text}</Typography> <IconButton {...other} />
     </Stack>
   );
@@ -32,8 +41,8 @@ const ExpandMore = styled((props) => {
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
+    duration: theme.transitions.duration.shortest
+  })
 }));
 
 const Movie = ({ propMovie }) => {
@@ -47,13 +56,16 @@ const Movie = ({ propMovie }) => {
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [movieIdToUpdate, setMovieIdToUpdate] = useState(null);
 
-  const userLogin = useSelector((state) => state.userLogin);
+  const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
-  const movieCreateReview = useSelector((state) => state.movieCreateReview);
+  const movieCreateReview = useSelector(state => state.movieCreateReview);
   const { success: successMovieReview } = movieCreateReview;
 
-  const movieDetails = useSelector((state) => state.movieDetails);
+  const movieUpdate = useSelector(state => state.movieUpdate);
+  const { success: successUpdate } = movieUpdate;
+
+  const movieDetails = useSelector(state => state.movieDetails);
   const { movie } = movieDetails;
 
   const handleExpandClick = () => {
@@ -83,11 +95,12 @@ const Movie = ({ propMovie }) => {
   useEffect(() => {
     if (
       expanded ||
-      (successMovieReview && currentMovie._id === movieIdToUpdate)
+      ((successMovieReview || successUpdate) &&
+        currentMovie._id === movieIdToUpdate)
     ) {
       dispatch(listMovieDetails(currentMovie._id));
     }
-  }, [dispatch, successMovieReview, expanded]);
+  }, [dispatch, successMovieReview, successUpdate, expanded]);
 
   useEffect(() => {
     if (movie) {
@@ -109,23 +122,37 @@ const Movie = ({ propMovie }) => {
     handleCloseReviewDialog();
   };
 
+  const isCreatedByUser = userInfo && currentMovie?.createdBy === userInfo.id;
   return (
     <>
+      {isCreatedByUser && isDeleteDialogOpen && (
+        <DeleteConfirmationDialog
+          isOpen={isDeleteDialogOpen}
+          close={handleToggleDeleteDialog}
+          movieId={currentMovie._id}></DeleteConfirmationDialog>
+      )}
+      {isCreatedByUser && isEditDialogOpen && (
+        <MovieEdit
+          isOpen={isEditDialogOpen}
+          close={handleToggleEditDialog}
+          movie={currentMovie}
+          setMovieIdToUpdate={() =>
+            setMovieIdToUpdate(currentMovie._id)
+          }></MovieEdit>
+      )}
       <Card
         sx={{
           display: 'flex',
           flexDirection: 'column',
           width: 800,
-          marginBottom: '10px',
-        }}
-      >
+          marginBottom: '10px'
+        }}>
         <Box
           sx={{
             flexDirection: 'row',
             display: 'flex',
-            gap: '20px',
-          }}
-        >
+            gap: '20px'
+          }}>
           <CardMedia
             sx={{ height: 300, width: '30%', borderRadius: '4px' }}
             image={currentMovie.image}
@@ -137,9 +164,8 @@ const Movie = ({ propMovie }) => {
               display: 'flex',
               flexDirection: 'row',
               gap: '20px',
-              width: '70%',
-            }}
-          >
+              width: '70%'
+            }}>
             <Box sx={{ width: '60%', wordWrap: 'break-word' }}>
               <Typography gutterBottom variant='h5' component='div'>
                 {currentMovie.name}
@@ -154,9 +180,8 @@ const Movie = ({ propMovie }) => {
               color='text.primary'
               sx={{
                 textAlign: 'left',
-                width: '40%',
-              }}
-            >
+                width: '40%'
+              }}>
               <Box fontWeight='fontWeightBold'>
                 Rating:
                 <Typography display='inline'>
@@ -196,16 +221,19 @@ const Movie = ({ propMovie }) => {
             expand={expanded}
             onClick={handleExpandClick}
             aria-expanded={expanded}
-            aria-label='show more'
-          >
+            aria-label='show more'>
             <ExpandMoreIcon />
           </ExpandMore>
-          <IconButton onClick={handleToggleEditDialog}>
-            <EditIcon />
-          </IconButton>
-          <IconButton onClick={handleToggleDeleteDialog}>
-            <DeleteIcon />
-          </IconButton>
+          {isCreatedByUser && (
+            <>
+              <IconButton onClick={handleToggleEditDialog}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={handleToggleDeleteDialog}>
+                <DeleteIcon />
+              </IconButton>
+            </>
+          )}
         </CardActions>
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
@@ -213,11 +241,10 @@ const Movie = ({ propMovie }) => {
               display={!currentMovie.reviews.length ? 'none' : 'inherit'}
               variant='h5'
               fontWeight={'bold'}
-              textAlign={'start'}
-            >
+              textAlign={'start'}>
               MovieLand Users Reviews
             </Typography>
-            {currentMovie.reviews.map((review) => (
+            {currentMovie.reviews.map(review => (
               <li key={review._id}>
                 <Review
                   userName={review.user.name}

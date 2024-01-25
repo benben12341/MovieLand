@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Paper, Grid, Typography, Dialog, DialogTitle } from '@mui/material';
+import { TextField, Button, Paper, Grid, Typography, Dialog } from '@mui/material';
 
 import GenresSelect from '../MovieInsert/components/GenresSelect';
 import ImageInput from '../MovieInsert/components/ImageInput';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import { MOVIE_CREATE_RESET } from '../../constants/movieConstants';
-import { createMovie } from '../../actions/movieActions';
+import { MOVIE_UPDATE_RESET } from '../../constants/movieConstants';
+import { updateMovie } from '../../actions/movieActions';
 
-const MovieEdit = ({ isOpen, movie, close }) => {
-    console.log();
+const MovieEdit = ({ isOpen, movie, close, setMovieIdToUpdate }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const movieCreate = useSelector((state) => state.movieCreate);
-    const { loading: loadingCreate, error: errorCreate, success: successCreate, movie: createdMovie } = movieCreate;
+    const movieUpdate = useSelector((state) => state.movieUpdate);
+    const { loading, error, success: successUpdate, movie: updatedMovie } = movieUpdate;
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
@@ -34,23 +33,22 @@ const MovieEdit = ({ isOpen, movie, close }) => {
     };
 
     const handleSubmit = () => {
-        dispatch(createMovie(inputs));
+        dispatch(updateMovie(inputs));
+        setMovieIdToUpdate();
+        close();
     };
 
     useEffect(() => {
-        console.log({ userInfo });
         if (!userInfo) navigate('/');
 
-        dispatch({ type: MOVIE_CREATE_RESET });
-        if (successCreate) navigate('/');
-        // if (successCreate)
-        // navigate(`/movie/${createdMovie._id}/edit`);
-    }, [dispatch, userInfo, navigate, successCreate, createdMovie]);
+        dispatch({ type: MOVIE_UPDATE_RESET });
+        if (successUpdate) navigate('/');
+    }, [dispatch, userInfo, navigate, successUpdate, updatedMovie]);
 
     return (
         isOpen &&
         <Dialog open={isOpen} onClose={close}>
-            <Paper elevation={3} style={{ padding: '20px', marginTop: '20px' }}>
+            <Paper elevation={3} style={{ padding: '20px' }}>
                 <Typography variant={'h5'} sx={{ marginBottom: '10px' }}>Movie Details</Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -78,8 +76,8 @@ const MovieEdit = ({ isOpen, movie, close }) => {
                     </Grid>
                 </Grid>
             </Paper>
-            {loadingCreate && <Loader />}
-            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+            {loading && <Loader />}
+            {error && <Message variant='danger'>{error}</Message>}
         </Dialog>
     );
 };

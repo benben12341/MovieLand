@@ -56,13 +56,10 @@ const Movie = () => {
   };
 
   useEffect(() => {
-    console.log({ userInfo });
     if (!userInfo) navigate('/');
 
     dispatch({ type: MOVIE_CREATE_RESET });
     if (successCreate) navigate('/');
-    // if (successCreate)
-    // navigate(`/movie/${createdMovie._id}/edit`);
   }, [dispatch, userInfo, navigate, successCreate, createdMovie]);
 
   return (

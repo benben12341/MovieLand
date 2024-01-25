@@ -1,5 +1,5 @@
-const asyncHandler = require("express-async-handler");
-const { Movie } = require("../models/MovieModel");
+const asyncHandler = require('express-async-handler');
+const Movie = require('../models/MovieModel');
 
 // @desc    Fetch all movies
 // @route   GET /api/movies
@@ -9,14 +9,7 @@ const getMovies = asyncHandler(async (req, res) => {
     ? {
         name: {
           $regex: req.query.keyword,
-          $options: "i",
-        },
-      }
-    : {};
-  const maxPrice = req.query.maxPrice
-    ? {
-        price: {
-          $lte: Number(req.query.maxPrice),
+          $options: 'i',
         },
       }
     : {};
@@ -30,10 +23,9 @@ const getMovies = asyncHandler(async (req, res) => {
 
   const count = await Movie.countDocuments({
     ...keyword,
-    ...maxPrice,
     ...rating,
   });
-  const movies = await Movie.find({ ...keyword, ...maxPrice, ...rating });
+  const movies = await Movie.find({ ...keyword, ...rating });
 
   res.json({ movies });
 });
@@ -43,10 +35,10 @@ const getMovies = asyncHandler(async (req, res) => {
 // @access  Public
 const getMovieById = asyncHandler(async (req, res) => {
   const movie = await Movie.findById(req.params.id).populate({
-    path: "reviews",
+    path: 'reviews',
     populate: {
-      path: "user",
-      model: "User",
+      path: 'user',
+      model: 'User',
     },
   });
 
@@ -58,7 +50,7 @@ const getMovieById = asyncHandler(async (req, res) => {
     res.json(movie);
   } else {
     res.status(404);
-    throw new Error("Movie not found");
+    throw new Error('Movie not found');
   }
 });
 
@@ -70,10 +62,10 @@ const deleteMovie = asyncHandler(async (req, res) => {
 
   if (movie) {
     await movie.remove();
-    res.json({ message: "Movie removed" });
+    res.json({ message: 'Movie removed' });
   } else {
     res.status(404);
-    throw new Error("Movie not found");
+    throw new Error('Movie not found');
   }
 });
 
@@ -93,25 +85,24 @@ const createMovie = asyncHandler(async (req, res) => {
 // @route   PUT /api/movies/:id
 // @access  Private/Admin
 const updateMovie = asyncHandler(async (req, res) => {
-  const { name, price, description, image, author, genre, countInStock } =
-    req.body;
+  const {
+    body: { name, summary, image, director, writer, genre },
+    params: { id },
+  } = req;
 
-  const movie = await Movie.findById(req.params.id);
+  const movie = await Movie.findByIdAndUpdate(id, {
+    name,
+    summary,
+    director,
+    writer,
+    genre,
+  });
+  
+  res.json(movie);
 
-  if (movie) {
-    movie.name = name;
-    movie.price = price;
-    movie.description = description;
-    movie.image = image;
-    movie.author = author;
-    movie.genre = genre;
-    movie.countInStock = countInStock;
-
-    const updatedMovie = await movie.save();
-    res.json(updatedMovie);
-  } else {
+  if (!movie) {
     res.status(404);
-    throw new Error("Movie not found");
+    throw new Error('Movie not found');
   }
 });
 
@@ -144,7 +135,7 @@ const createMovieReview = asyncHandler(async (req, res) => {
     res.json(updatedMovie);
   } else {
     res.status(404);
-    throw new Error("Movie not found");
+    throw new Error('Movie not found');
   }
 });
 
