@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listMovies } from '../../actions/movieActions';
-import Movie from '../../components/Movie';
-import CircularProgress from '@mui/material/CircularProgress';
-import { Box, Checkbox, FormControlLabel, Stack } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Stack,
+  CircularProgress
+} from '@mui/material';
 import MovieFilter from '../../components/MovieFilter';
+import Movie from '../../components/Movie';
 
 const MovieList = () => {
   const dispatch = useDispatch();
   const movieList = useSelector(state => state.movieList);
-  const { loading, error, movies } = movieList;
+  const { loading, movies } = movieList;
+  const movieDelete = useSelector(state => state.movieDelete);
+  const { success: successDelete } = movieDelete;
+
   const [isMineMovies, setIsMineMovies] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const userLogin = useSelector(state => state.userLogin);
@@ -38,6 +46,10 @@ const MovieList = () => {
       : movies;
 
   const displayMovies = filterBySearchTerm(filterMyMovies(movies));
+
+  useEffect(() => {
+    successDelete && dispatch(listMovies(''));
+  }, [successDelete]);
 
   return (
     <>

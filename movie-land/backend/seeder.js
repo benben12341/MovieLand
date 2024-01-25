@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const { users } = require('./data/users');
 const { movies } = require('./data/movies');
-const { User } = require('./models/UserModel');
-const { Movie } = require('./models/MovieModel');
+const User = require('./models/UserModel');
+const Movie = require('./models/MovieModel');
 const { connectDB } = require('./config/db');
 const browserObject = require('./scraper/browser');
 const scraperController = require('./scraper/pageController');
@@ -14,8 +14,8 @@ connectDB();
 
 const importData = async () => {
   try {
-    // await Movie.deleteMany();
-    // await Movie.insertMany(movies);
+    await Movie.deleteMany();
+    await Movie.insertMany(movies);
     // await Movie.deleteMany()
     // await User.deleteMany()
 

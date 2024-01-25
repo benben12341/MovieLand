@@ -13,7 +13,7 @@ const GenresSelect = ({ value, onChange }) => {
             variant={'outlined'}
         >
             <MenuItem value=''>Not Set Yet</MenuItem>
-            {Object.values(Genres).map((genre, index) => (
+            {Object.values(Genres).sort().map((genre, index) => (
                 <MenuItem key={index} value={genre}>
                     {genre}
                 </MenuItem>

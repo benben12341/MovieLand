@@ -16,7 +16,7 @@ router.post('/', protect, createMovie);
 router.post('/:id/reviews', protect, createMovieReview);
 router.get('/top', getTopMovies);
 router.get('/:id', getMovieById);
-router.delete('/:id', protect, admin, deleteMovie);
-router.put('/:id', protect, admin, updateMovie);
+router.delete('/:id', protect, deleteMovie);
+router.put('/:id', protect, updateMovie);
 
 module.exports = router;

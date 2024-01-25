@@ -32,7 +32,7 @@ export const listMovies =
       rating = rating === 'all' ? '' : rating;
 
       const { data } = await axios.get(
-        `/api/movies?keyword=${keyword}&maxPrice=${maxPrice}&rating=${rating}`
+        `/api/movies?keyword=${keyword}&rating=${rating}`
       );
 
       dispatch({ type: MOVIE_LIST_SUCCESS, payload: data });

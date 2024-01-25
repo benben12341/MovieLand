@@ -1,7 +1,7 @@
 
-import { TextField, Box } from '@mui/material';
+import { TextField, Typography, Box } from '@mui/material';
 
-const ImageInput = ({ onChange }) => {
+const ImageInput = ({ onChange, initialImage = null }) => {
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
@@ -15,14 +15,19 @@ const ImageInput = ({ onChange }) => {
 
     return (
         <Box>
-            <TextField
-                fullWidth
-                label={'Upload Image'}
-                type={'file'}
-                accept={'image/*'}
-                onChange={handleImageChange}
-                InputLabelProps={{ shrink: true }}
-            />
+            {!initialImage ? (
+                <TextField
+                    fullWidth
+                    label={'Upload Image'}
+                    type={'file'}
+                    accept={'image/*'}
+                    onChange={handleImageChange}
+                    InputLabelProps={{ shrink: true }}
+                />)
+                :
+                (<Typography variant="caption" color="textSecondary">
+                    Selected Image: {initialImage}
+                </Typography>)}
         </Box>
     );
 };

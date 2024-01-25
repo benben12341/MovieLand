@@ -2,23 +2,23 @@ const mongoose = require('mongoose');
 const { ReviewSchema } = require('./ReviewModel');
 const UserSchema = require('./UserModel');
 
-const movieSchema = mongoose.Schema(
+const MovieSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     image: {
       type: String,
-      required: true
+      required: true,
     },
     genre: {
       type: String,
-      required: true
+      required: true,
     },
     summary: {
       type: String,
-      required: true
+      required: true,
     },
     rating: {
       type: Number,
@@ -26,16 +26,16 @@ const movieSchema = mongoose.Schema(
     },
     director: {
       type: String,
-      required: true
+      required: true,
     },
     writer: {
       type: String,
-      required: true
+      required: true,
     },
     reviewsAmount: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
     },
     reviews: [ReviewSchema],
     createdBy: {
@@ -44,10 +44,8 @@ const movieSchema = mongoose.Schema(
     },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 
-const Movie = mongoose.model('Movie', movieSchema);
-
-module.exports = { Movie };
+module.exports = mongoose.model('Movie', MovieSchema);
