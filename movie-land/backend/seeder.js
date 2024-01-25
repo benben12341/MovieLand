@@ -4,7 +4,6 @@ const { users } = require('./data/users');
 const { movies } = require('./data/movies');
 const { User } = require('./models/UserModel');
 const { Movie } = require('./models/MovieModel');
-const { Order } = require('./models/orderModel');
 const { connectDB } = require('./config/db');
 const browserObject = require('./scraper/browser');
 const scraperController = require('./scraper/pageController');
@@ -17,7 +16,6 @@ const importData = async () => {
   try {
     // await Movie.deleteMany();
     // await Movie.insertMany(movies);
-    // await Order.deleteMany()
     // await Movie.deleteMany()
     // await User.deleteMany()
 
@@ -37,7 +35,6 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    await Order.deleteMany();
     await Movie.deleteMany();
     await User.deleteMany();
 
