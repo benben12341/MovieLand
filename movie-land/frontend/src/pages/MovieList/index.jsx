@@ -36,13 +36,13 @@ const MovieList = () => {
   };
 
   const filterBySearchTerm = movies =>
-    movies.filter(movie =>
+    movies?.filter(movie =>
       movie?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const filterMyMovies = movies =>
     isMineMovies
-      ? movies.filter(movie => movie.createdBy === userInfo.id)
+      ? movies?.filter(movie => movie.createdBy === userInfo.id)
       : movies;
 
   const displayMovies = filterBySearchTerm(filterMyMovies(movies));
