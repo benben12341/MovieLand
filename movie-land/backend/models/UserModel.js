@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema(
   {
@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema(
     googleId: {
       type: String,
       unique: true,
+      sparse: true,
     },
   },
   {
