@@ -6,7 +6,7 @@
     "certificatePath": ""
   },
   "db": {
-    "address": "mongodb://localhost:21771",
+    "address": "mongodb://server:123123123@127.0.0.1:21771",
     "name": "web_class",
     "query": ""
   },
