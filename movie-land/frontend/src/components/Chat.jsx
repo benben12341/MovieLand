@@ -81,7 +81,7 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
               marginBottom: '10px',
               overflowY: 'scroll'
             }}>
-            {messages.map((message, index) => (
+            {messages?.map((message, index) => (
               <Grid
                 key={index}
                 container

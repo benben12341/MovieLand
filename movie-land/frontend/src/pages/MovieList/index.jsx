@@ -35,14 +35,14 @@ const MovieList = () => {
     setIsMineMovies(checked);
   };
 
-  const filterBySearchTerm = (movies) =>
-    movies.filter((movie) =>
+  const filterBySearchTerm = movies =>
+    movies?.filter(movie =>
       movie?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const filterMyMovies = (movies) =>
     isMineMovies
-      ? movies.filter((movie) => movie.createdBy === userInfo.id)
+      ? movies?.filter(movie => movie.createdBy === userInfo.id)
       : movies;
 
   const displayMovies = filterBySearchTerm(filterMyMovies(movies));

@@ -59,7 +59,7 @@ const Profile = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-  
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -69,7 +69,7 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
-  
+
   const submitHandler = (e) => {
     e.preventDefault()
     if (password !== confirmPassword) {
@@ -78,7 +78,7 @@ const Profile = () => {
       dispatch(updateUserProfile({ user: { _id: userInfo.id, name, email, password, image } }))
     }
   }
-  
+
   return (
     <div className='row' style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <div className='col-md-3 pt-5 text-center'>
