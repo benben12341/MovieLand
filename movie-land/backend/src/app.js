@@ -31,10 +31,6 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
-
 app.use('/api/movies', movieRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
@@ -50,6 +46,7 @@ app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 
 app.use(express.static(path.join(dirname, 'dist')));
 
+console.log(path.join(dirname, 'dist', 'index.html'));
 app.get('/*', (req, res) => {
   res.sendFile(path.join(dirname, 'dist', 'index.html'));
 });
