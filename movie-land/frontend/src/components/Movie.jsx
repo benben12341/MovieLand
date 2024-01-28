@@ -123,8 +123,6 @@ const Movie = ({ propMovie }) => {
   };
 
   const isCreatedByUser = userInfo && currentMovie?.createdBy === userInfo.id;
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:9090';
-  const imageUrl = currentMovie && `${apiUrl}${currentMovie?.image}`;
 
   return (
     <>
@@ -158,7 +156,7 @@ const Movie = ({ propMovie }) => {
           }}>
           <CardMedia
             sx={{ height: 300, width: '30%', borderRadius: '4px' }}
-            image={imageUrl}
+            image={currentMovie.image}
             title={currentMovie.name}
             component='img'
           />

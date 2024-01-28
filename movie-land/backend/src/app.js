@@ -74,7 +74,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const io = new Server({
   cors: {
-    origin: 'http://localhost:9090',
+    origin: config.get('cors.server'),
   },
 });
 
