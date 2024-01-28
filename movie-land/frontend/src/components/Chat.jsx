@@ -20,7 +20,7 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 
-const socket = io('http://localhost:443');
+const socket = io('https://localhost:443');
 
 const Chat = ({ isChatOpen, handleCloseChat }) => {
   const [messages, setMessages] = useState([]);
