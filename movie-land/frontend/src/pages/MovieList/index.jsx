@@ -6,28 +6,28 @@ import {
   Checkbox,
   FormControlLabel,
   Stack,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
 import MovieFilter from '../../components/MovieFilter';
 import Movie from '../../components/Movie';
 
 const MovieList = () => {
   const dispatch = useDispatch();
-  const movieList = useSelector(state => state.movieList);
+  const movieList = useSelector((state) => state.movieList);
   const { loading, movies } = movieList;
-  const movieDelete = useSelector(state => state.movieDelete);
+  const movieDelete = useSelector((state) => state.movieDelete);
   const { success: successDelete } = movieDelete;
 
   const [isMineMovies, setIsMineMovies] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const userLogin = useSelector(state => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
     dispatch(listMovies(''));
   }, [dispatch]);
 
-  const handleFilterChange = searchTerm => {
+  const handleFilterChange = (searchTerm) => {
     setSearchTerm(searchTerm);
   };
 
@@ -40,7 +40,7 @@ const MovieList = () => {
       movie?.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  const filterMyMovies = movies =>
+  const filterMyMovies = (movies) =>
     isMineMovies
       ? movies?.filter(movie => movie.createdBy === userInfo.id)
       : movies;
@@ -53,12 +53,21 @@ const MovieList = () => {
 
   return (
     <>
-      <Stack direction={'row'} spacing={1} width='100%'>
+      <Stack
+        direction={'row'}
+        spacing={1}
+        width='100%'
+        justifyContent={'center'}
+      >
         <MovieFilter onFilterChange={handleFilterChange} />
-        <FormControlLabel
-          control={<Checkbox onChange={handleChange} checked={isMineMovies} />}
-          label='my movies'
-        />
+        {userInfo && (
+          <FormControlLabel
+            control={
+              <Checkbox onChange={handleChange} checked={isMineMovies} />
+            }
+            label='my movies'
+          />
+        )}
       </Stack>
       {loading ? (
         <Box sx={{ display: 'flex' }}>
