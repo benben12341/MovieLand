@@ -7,6 +7,7 @@ import http from 'http';
 import https from 'https';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import fs from 'fs';
 
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 import { connectDB } from './config/db.js';
