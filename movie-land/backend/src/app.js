@@ -67,8 +67,8 @@ if (process.env.NODE_ENV !== 'production') {
     .listen(port, () => console.log(`listening on port ${port}`));
 } else {
   const options = {
-    key: fs.readFileSync('./client-key.pem'),
-    cert: fs.readFileSync('./client-cert.pem'),
+    key: fs.readFileSync(path.resolve(dirname, './client-key.pem')),
+    cert: fs.readFileSync(path.resolve(dirname, './client-cert.pem')),
   };
   server = https
     .createServer(options, app)
