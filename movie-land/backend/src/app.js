@@ -67,7 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
     .listen(port, () => console.log(`listening on port ${port}`));
 } else {
   const options = {
-    key: fs.readFileSync('./client-key-pem'),
+    key: fs.readFileSync('./client-key.pem'),
     cert: fs.readFileSync('./client-cert.pem'),
   };
   server = https
