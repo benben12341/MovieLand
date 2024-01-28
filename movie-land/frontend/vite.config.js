@@ -4,11 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   build: {
     rollupOptions: {
-      external: [
-        'react-router-dom',
-        '@mui/icons-material',
-        '@mui/icons-material/Home',
-      ],
+      external: ['@mui/icons-material/Home'],
     },
     outDir: 'dist',
   },
