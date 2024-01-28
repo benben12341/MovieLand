@@ -8,7 +8,7 @@
   "type": "module",
   "homepage": "https://github.com/benben12341/MovieLand#readme",
   "scripts": {
-    "start": "NODE_ENV=prod node dist/app.js",
+    "start": "NODE_ENV=production node dist/app.js",
     "dev": "NODE_ENV=dev nodemon —exec babel-node src/app.js",
     "build": "babel src -d dist"
   },
