@@ -6,8 +6,8 @@
     "certificatePath": ""
   },
   "db": {
-    "address": "mongodb://localhost:27017",
-    "name": "prod",
+    "address": "mongodb://localhost:21771",
+    "name": "web_class",
     "query": ""
   },
   "secrets": {
