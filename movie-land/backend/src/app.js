@@ -47,9 +47,11 @@ const dirname = path.resolve();
 
 app.use('/uploads', express.static(path.join(dirname, '/uploads')));
 
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
-// });
+app.use(express.static(path.join(dirname, 'dist')));
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(dirname, 'dist', 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);
