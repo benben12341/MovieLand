@@ -72,11 +72,7 @@ if (process.env.NODE_ENV !== 'production') {
     .listen(443, () => console.log(`listening on port ${port}`));
 }
 
-const io = new Server({
-  cors: {
-    origin: config.get('cors.server'),
-  },
-});
+const io = new Server(server);
 
 io.on('connection', (socket) => {
   socket.on('new-message', (message) => {

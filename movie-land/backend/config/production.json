@@ -15,8 +15,8 @@
     "expiresIn": "12h"
   },
   "cors": {
-    "server": "https://localhost:443",
-    "origin": "http://localhost:3000",
+    "server": "https://node49.cs.colman.ac.il",
+    "origin": "https://node49.cs.colman.ac.il",
     "credentials": true,
     "optionSuccessStatus": 200
   }

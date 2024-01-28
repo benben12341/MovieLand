@@ -15,17 +15,17 @@ import {
   Avatar,
   Grid,
   Box,
-  IconButton
+  IconButton,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 
-const socket = io('https://localhost:443');
+const socket = io('https://node49.cs.colman.ac.il');
 
 const Chat = ({ isChatOpen, handleCloseChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const userLogin = useSelector(state => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
   }, []);
 
   useEffect(() => {
-    socket.on('update-messages', message => {
+    socket.on('update-messages', (message) => {
       console.log(message);
       setMessages([...messages, message]);
     });
@@ -49,13 +49,13 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
       socket.emit('new-message', {
         text: newMessage,
         sender: userInfo.id,
-        senderName: userInfo.name
+        senderName: userInfo.name,
       });
       setNewMessage('');
     }
   };
 
-  const handleKeyDown = e => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // Prevents the default behavior of the Enter key (e.g., new line)
       handleSendMessage();
@@ -70,8 +70,9 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
           sx={{
             height: '350px',
             overflowY: 'scroll !important',
-            marginBottom: '10px'
-          }}>
+            marginBottom: '10px',
+          }}
+        >
           <Paper
             elevation={3}
             style={{
@@ -79,8 +80,9 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
               maxHeight: '350px',
               padding: '10px',
               marginBottom: '10px',
-              overflowY: 'scroll'
-            }}>
+              overflowY: 'scroll',
+            }}
+          >
             {messages?.map((message, index) => (
               <Grid
                 key={index}
@@ -90,8 +92,9 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
                 width={'80% !important'}
                 style={{
                   marginBottom: '10px',
-                  paddingLeft: '10px'
-                }}>
+                  paddingLeft: '10px',
+                }}
+              >
                 <Grid item>
                   <Avatar>
                     <AccountCircleIcon />
@@ -106,7 +109,8 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
                     }
                     p={2}
                     borderRadius={8}
-                    style={{ position: 'relative' }}>
+                    style={{ position: 'relative' }}
+                  >
                     {/* Display sender's name above the message content */}
                     <Typography
                       variant='body1'
@@ -114,16 +118,18 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
                       style={{
                         color:
                           message.sender === userInfo.id ? 'white' : 'black',
-                        marginBottom: '4px'
-                      }}>
+                        marginBottom: '4px',
+                      }}
+                    >
                       {message.senderName}
                     </Typography>
                     <Typography
                       variant='body2'
                       style={{
                         color:
-                          message.sender === userInfo.id ? 'white' : 'black'
-                      }}>
+                          message.sender === userInfo.id ? 'white' : 'black',
+                      }}
+                    >
                       {message.text}
                     </Typography>
                   </Box>
@@ -136,14 +142,15 @@ const Chat = ({ isChatOpen, handleCloseChat }) => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
+            justifyContent: 'space-between',
+          }}
+        >
           <TextField
             label='Type your message'
             variant='outlined'
             fullWidth
             value={newMessage}
-            onChange={e => setNewMessage(e.target.value)}
+            onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={handleKeyDown}
           />
           <IconButton color='primary' onClick={handleSendMessage}>
