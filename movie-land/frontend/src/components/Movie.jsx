@@ -10,7 +10,8 @@ import {
   Typography,
   Collapse,
   IconButton,
-  Divider
+  Divider,
+  Grid,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,14 +27,15 @@ import MovieExternalReviews from './MovieExternalReviews';
 import { createMovieReview, listMovieDetails } from '../actions/movieActions';
 import MovieEdit from '../pages/MovieEdit';
 
-const ExpandMore = styled(props => {
+const ExpandMore = styled((props) => {
   const { expand, text, ...other } = props;
   return (
     <Stack
       spacing={1}
       direction={'row'}
       alignItems={'center'}
-      marginLeft={'auto'}>
+      marginLeft={'auto'}
+    >
       <Typography>{text}</Typography> <IconButton {...other} />
     </Stack>
   );
@@ -41,8 +43,8 @@ const ExpandMore = styled(props => {
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest
-  })
+    duration: theme.transitions.duration.shortest,
+  }),
 }));
 
 const Movie = ({ propMovie }) => {
@@ -56,16 +58,16 @@ const Movie = ({ propMovie }) => {
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [movieIdToUpdate, setMovieIdToUpdate] = useState(null);
 
-  const userLogin = useSelector(state => state.userLogin);
+  const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const movieCreateReview = useSelector(state => state.movieCreateReview);
+  const movieCreateReview = useSelector((state) => state.movieCreateReview);
   const { success: successMovieReview } = movieCreateReview;
 
-  const movieUpdate = useSelector(state => state.movieUpdate);
+  const movieUpdate = useSelector((state) => state.movieUpdate);
   const { success: successUpdate } = movieUpdate;
 
-  const movieDetails = useSelector(state => state.movieDetails);
+  const movieDetails = useSelector((state) => state.movieDetails);
   const { movie } = movieDetails;
 
   const handleExpandClick = () => {
@@ -81,11 +83,11 @@ const Movie = ({ propMovie }) => {
   };
 
   const handleToggleEditDialog = () => {
-    setIsEditDialogOpen(x => !x);
+    setIsEditDialogOpen((x) => !x);
   };
 
   const handleToggleDeleteDialog = () => {
-    setIsDeleteDialogOpen(x => !x);
+    setIsDeleteDialogOpen((x) => !x);
   };
 
   useEffect(() => {
@@ -130,84 +132,62 @@ const Movie = ({ propMovie }) => {
         <DeleteConfirmationDialog
           isOpen={isDeleteDialogOpen}
           close={handleToggleDeleteDialog}
-          movieId={currentMovie._id}></DeleteConfirmationDialog>
+          movieId={currentMovie._id}
+        ></DeleteConfirmationDialog>
       )}
       {isCreatedByUser && isEditDialogOpen && (
         <MovieEdit
           isOpen={isEditDialogOpen}
           close={handleToggleEditDialog}
           movie={currentMovie}
-          setMovieIdToUpdate={() =>
-            setMovieIdToUpdate(currentMovie._id)
-          }></MovieEdit>
+          setMovieIdToUpdate={() => setMovieIdToUpdate(currentMovie._id)}
+        ></MovieEdit>
       )}
       <Card
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: 800,
-          marginBottom: '10px'
-        }}>
-        <Box
-          sx={{
-            flexDirection: 'row',
-            display: 'flex',
-            gap: '20px'
-          }}>
-          <CardMedia
-            sx={{ height: 300, width: '30%', borderRadius: '4px' }}
-            image={currentMovie.image}
-            title={currentMovie.name}
-            component='img'
-          />
-          <CardContent
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              gap: '20px',
-              width: '70%'
-            }}>
-            <Box sx={{ width: '60%', wordWrap: 'break-word' }}>
+          marginBottom: '10px',
+        }}
+      >
+        <CardContent>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <CardMedia
+                sx={{ height: 300, borderRadius: '4px' }}
+                image={currentMovie.image}
+                title={currentMovie.name}
+                component='img'
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
               <Typography gutterBottom variant='h5' component='div'>
                 {currentMovie.name}
               </Typography>
               <Typography sx={{ textAlign: 'left' }} color='text.secondary'>
                 {currentMovie.summary}
               </Typography>
-            </Box>
-            <Typography
-              component='div'
-              variant='body1'
-              color='text.primary'
-              sx={{
-                textAlign: 'left',
-                width: '40%'
-              }}>
-              <Box fontWeight='fontWeightBold'>
-                Rating:
-                <Typography display='inline'>
-                  {' '}
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Stack textAlign={'start'}>
+                <Typography>
+                  <span style={{ fontWeight: 'bold' }}>Website Rating: </span>
                   {parseFloat(currentMovie.rating).toFixed(2)}
                 </Typography>
-              </Box>
-              <Box fontWeight='fontWeightBold'>
-                Genre:
-                <Typography display='inline'> {currentMovie.genre}</Typography>
-              </Box>
-              <Box fontWeight='fontWeightBold'>
-                Director:
-                <Typography display='inline'>
-                  {' '}
+                <Typography>
+                  <span style={{ fontWeight: 'bold' }}>Genre: </span>
+                  {currentMovie.genre}
+                </Typography>
+                <Typography>
+                  <span style={{ fontWeight: 'bold' }}>Director: </span>
                   {currentMovie.director}
                 </Typography>
-              </Box>
-              <Box fontWeight='fontWeightBold'>
-                Writer:
-                <Typography display='inline'> {currentMovie.writer}</Typography>
-              </Box>
-            </Typography>
-          </CardContent>
-        </Box>
+                <Typography>
+                  <span style={{ fontWeight: 'bold' }}>Writer: </span>
+                  {currentMovie.writer}
+                </Typography>
+              </Stack>
+            </Grid>
+          </Grid>
+        </CardContent>
         <CardActions disableSpacing sx={{ justifyContent: 'space-between' }}>
           {userInfo && (
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
@@ -222,7 +202,8 @@ const Movie = ({ propMovie }) => {
             expand={expanded}
             onClick={handleExpandClick}
             aria-expanded={expanded}
-            aria-label='show more'>
+            aria-label='show more'
+          >
             <ExpandMoreIcon />
           </ExpandMore>
           {isCreatedByUser && (
@@ -238,28 +219,33 @@ const Movie = ({ propMovie }) => {
         </CardActions>
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
-            <Typography
-              display={!currentMovie.reviews.length ? 'none' : 'inherit'}
-              variant='h5'
-              fontWeight={'bold'}
-              textAlign={'start'}>
-              MovieLand Users Reviews
-            </Typography>
-            {currentMovie.reviews.map(review => (
-              <li key={review._id}>
-                <Review
-                  userName={review.user.name}
-                  content={review.comment}
-                  createAt={review.createdAt}
-                  rating={review.rating}
+            <Grid container>
+              <Grid item xs={12} md={12}>
+                <Typography
+                  display={!currentMovie.reviews.length ? 'none' : 'inherit'}
+                  variant='h5'
+                  fontWeight={'bold'}
+                  textAlign={'start'}
+                >
+                  MovieLand Users Reviews
+                </Typography>
+                {currentMovie.reviews.map((review) => (
+                  <li key={review._id}>
+                    <Review
+                      userName={review.user.name}
+                      content={review.comment}
+                      createAt={review.createdAt}
+                      rating={review.rating}
+                    />
+                  </li>
+                ))}
+                <Divider
+                  className={!currentMovie.reviews.length ? 'display-none' : ''}
+                  sx={{ width: '100%' }}
                 />
-              </li>
-            ))}
-            <Divider
-              className={!currentMovie.reviews.length ? 'display-none' : ''}
-              sx={{ width: '100%' }}
-            />
-            <MovieExternalReviews movie={currentMovie} />
+                <MovieExternalReviews movie={currentMovie} />
+              </Grid>
+            </Grid>
           </CardContent>
         </Collapse>
       </Card>
