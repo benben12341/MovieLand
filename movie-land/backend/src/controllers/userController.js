@@ -9,9 +9,9 @@ const clientId =
   '640622037841-rmcrulj2s0ecud57vip8rvk9fjrfs225.apps.googleusercontent.com';
 const googleClient = new OAuth2Client(clientId);
 
-const getAll = ({}, {}) => User.find();
+const getAll = ({ }, { }) => User.find();
 
-const getById = ({ params: { id } }, {}) =>
+const getById = ({ params: { id } }, { }) =>
   User.findById(id).select('-password');
 
 const getUserProfile = async ({ user: { _id } }, res) => {
@@ -30,9 +30,9 @@ const getUserProfile = async ({ user: { _id } }, res) => {
   }
 };
 
-const deleteUser = ({ params: { id } }, {}) => User.findByIdAndDelete(id);
+const deleteUser = ({ params: { id } }, { }) => User.findByIdAndDelete(id);
 
-const register = async ({ body }, {}) => {
+const register = async ({ body }, { }) => {
   try {
     const userToCreate = new User(body);
     const newUser = await userToCreate.save();
@@ -70,23 +70,25 @@ const googleLogin = async ({ body }, res) => {
       audience: clientId,
     });
 
-    const { sub: googleUserId, email, name } = ticket.getPayload();
+    const { sub: googleUserId, email, name, picture } = ticket.getPayload();
     const googleUser = await User.findOne({ googleId: googleUserId });
-
-    if (!googleUser) {
-      await new User({
-        name: name,
-        email: email,
-        googleId: googleUserId,
-      }).save();
-    }
 
     const token = jwt.sign(
       { googleUserId, email, name },
       config.get('secrets.key')
     );
 
-    return { token, id: googleUserId, name: name };
+    if (!googleUser) {
+      const newUser = await new User({
+        name: name,
+        email: email,
+        googleId: googleUserId,
+        image: picture
+      }).save();
+      return { token, id: newUser._id, name: name, image: picture };
+    }
+
+    return { token, id: googleUser._id, name: name, image: picture };
   } catch (error) {
     console.error('Error during Google token verification:', error);
     res.status(500).json({ error: 'Internal Server Error' });
