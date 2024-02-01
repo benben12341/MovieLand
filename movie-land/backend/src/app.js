@@ -8,6 +8,8 @@ import https from 'https';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import fs from 'fs';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
 
 import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 import { connectDB } from './config/db.js';
@@ -65,7 +67,7 @@ if (process.env.NODE_ENV !== 'production') {
 } else {
   const options = {
     key: fs.readFileSync(path.resolve(dirname, './client-key.pem')),
-    cert: fs.readFileSync(path.resolve(dirname, './client-cert.pem')),
+    cert: fs.readFileSync(path.resolve(dirname, './client-cert.pem'))
   };
   server = https
     .createServer(options, app)
@@ -74,8 +76,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 const io = new Server(server);
 
-io.on('connection', (socket) => {
-  socket.on('new-message', (message) => {
+io.on('connection', socket => {
+  socket.on('new-message', message => {
     createMessage(message);
     io.emit('update-messages', message);
   });
