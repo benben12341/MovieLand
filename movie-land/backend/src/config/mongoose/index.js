@@ -1,13 +1,10 @@
-import config from 'config';
 import mongoose from 'mongoose';
 
 mongoose.set('strictQuery', true);
 
-export const connectDB = async () => {
+export const connectDB = async (address, name, query) => {
   try {
-    const connectionString = `${config.get('db.address')}/${config.get(
-      'db.name'
-    )}`;
+    const connectionString = `${address}/${name}`;
     const conn = await mongoose.connect(connectionString);
     console.log(
       `MongoDB Connected: ${conn.connection.host} || ${connectionString}`
