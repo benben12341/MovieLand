@@ -2,6 +2,8 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import swaggerUI from 'swagger-ui-express';
+import swaggerJsDoc from 'swagger-jsdoc';
 
 import { notFound, errorHandler } from '../../middlewares/errorMiddleware.js';
 import movieRoutes from '../../routes/movieRoutes.js';
@@ -25,6 +27,20 @@ const initApp = () => {
   const dirname = path.resolve();
 
   app.use('/uploads', express.static(path.join(dirname, '/uploads')));
+  const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'MovieLand API Documentation',
+        version: '1.0.0',
+        description:
+          'REST server including authentication using JWT and refresh token',
+      },
+    },
+    apis: [path.join(dirname, 'src/routes/*.js')],
+  };
+  const specs = swaggerJsDoc(options);
+  app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
   app.use(express.static(path.join(dirname, 'dist')));
 

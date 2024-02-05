@@ -19,11 +19,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: '/uploads/userImage.png',
     },
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
     googleId: {
       type: String,
       unique: true,
