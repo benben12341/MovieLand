@@ -12,7 +12,7 @@ import uploadRoutes from '../../routes/uploadRoutes.js';
 import messageRoutes from '../../routes/messageRoutes.js';
 import startServer from './startServer.js';
 
-const initApp = async () => {
+const initApp = async (port) => {
   const app = express();
 
   app.use(cors());
@@ -27,6 +27,7 @@ const initApp = async () => {
   const dirname = path.resolve();
 
   app.use('/uploads', express.static(path.join(dirname, '/uploads')));
+
   const options = {
     definition: {
       openapi: '3.0.0',
@@ -51,7 +52,7 @@ const initApp = async () => {
   app.use(notFound);
   app.use(errorHandler);
 
-  const createdApp = await startServer(app);
+  const createdApp = await startServer(app, port);
   return createdApp;
 };
 
