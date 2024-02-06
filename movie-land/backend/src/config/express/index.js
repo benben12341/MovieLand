@@ -12,7 +12,7 @@ import uploadRoutes from '../../routes/uploadRoutes.js';
 import messageRoutes from '../../routes/messageRoutes.js';
 import startServer from './startServer.js';
 
-const initApp = () => {
+const initApp = async () => {
   const app = express();
 
   app.use(cors());
@@ -51,7 +51,8 @@ const initApp = () => {
   app.use(notFound);
   app.use(errorHandler);
 
-  startServer(app);
+  const createdApp = await startServer(app);
+  return createdApp;
 };
 
 export default initApp;

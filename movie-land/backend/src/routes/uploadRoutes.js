@@ -7,7 +7,7 @@ import multer from 'multer';
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-console.log();
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, join(__dirname, '../../uploads'));
