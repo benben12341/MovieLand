@@ -17,14 +17,14 @@ The template can be run in development, or in production. For development, use t
 ### Start the React App
 
 ```
-npm start
+npm run dev
 ```
 
 ### Start the Express Server
 
 ```bash
 cd server
-npm start
+npm run dev
 ```
 
 ![Imgur](https://i.imgur.com/62fQTfJ.png)
@@ -44,7 +44,7 @@ In production, you want Express to serve up your app.
 ### Build React App
 
 ```bash
-npm build
+npm run build
 ```
 
 This will build the entire app into the "build" folder. This is the folder that you would deploy to your server. The entrypoint is `server.js`. You can test the production build locally by running...
