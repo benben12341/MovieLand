@@ -1,14 +1,13 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import { users } from './data/users.js';
+import config from 'config';
 import { movies } from './data/movies.js';
 import User from './models/UserModel.js';
 import Movie from './models/MovieModel.js';
-import { connectDB } from './config/db.js';
+import { connectDB } from './config/mongoose/index.js';
 
-dotenv.config();
+const { address, name, query } = config.get('db');
 
-connectDB();
+connectDB(address, name, query);
 
 export const importData = async () => {
   try {

@@ -7,8 +7,8 @@ import { Server } from 'socket.io';
 
 import { createMessage } from '../../controllers/messageController.js';
 
-export default (app) => {
-  const port = config.get('app.port') || 5000;
+export default async (app, customPort) => {
+  const port = customPort || config.get('app.port') || 5000;
   const dirname = path.resolve();
 
   let server;
@@ -40,4 +40,6 @@ export default (app) => {
       socket.broadcast.emit('clients', io.engine.clientsCount);
     });
   });
+
+  return app;
 };
